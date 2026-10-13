@@ -1,0 +1,89 @@
+0x0600a7e8 func rnc_Unpack2 hand RNC method 2 decompressor; reads sizes from header, bit-stream literal and match loop
+0x06017a3c func game_MainLoop hand boot and main state loop; loads VERSION.BIN and PERMGFX.BIN, runs title, menu and race flow
+0x060180dc func race_UpdateEndConditions hand provisional; checks pad bits and race state, sets finish and timeout flags and timers
+0x06018418 func frame_WaitSyncAdvanceState hand provisional; waits on a flag, runs sync callbacks, sets game state to 3
+0x06018494 func pad_CheckAllButtonsHeld hand tests pad word masks for both pads, resets state on transitions
+0x0601853c func cam_BuildViewMatrices hand builds 3x4 rotation matrix from yaw, pitch and roll via sine table, writes three scaled copies
+0x0601892c func dma_StartNextFileBlock hand provisional; picks next table entry and programs SCU DMA registers
+0x06018a30 func vdp1_SwapCommandListsAndSync hand provisional; frame sync, copies command buffers, SCU DMA transfer
+0x06018ed0 func cam_CalcLookAtAngles hand computes yaw and pitch from camera position to target
+0x06018fb8 func cam_GetNegatedTargetPos hand returns negated target position from object offsets +8, +10, +12
+0x06018fe4 func cam_EaseZoomSpeed hand eases value at offset 0x16 toward 0x12 or 0x40 in steps of 2
+0x06019038 func cam_UpdateFollowSmooth hand follow camera with mode 4 offset and smoothing of position and angles
+0x06019548 func cam_UpdateFollowSimple hand simpler follow camera with same offset math, copies results directly
+0x06019760 func cam_UpdateTrackViewpoints hand switch over four camera modes, nearest viewpoint table lookup, timer 0x78
+0x06019cac func gfx_ResetMenuState hand provisional; clears tables, loads BIG_R.BIN, ICONS.BIN or ICONS2.BIN, VERSION.BIN
+0x06019e90 func cam_InitFromTarget hand copies target position and angles scaled by shift 4
+0x06019ee0 func menu_UpdateSelectionScroll hand provisional; moves selection by character table, steps toward target
+0x0601a32c func vdp2_CopyTiledRect hand copies a rectangle between swizzled 8x8-tile layouts
+0x0601a428 func menu_OptionsScreen hand runs options screen, loads OPTIONS.BIN, handles pad input
+0x0601b4a4 func menu_UpdateFreeLookCamera hand provisional; sine-driven sway plus pad-controlled offsets and decay
+0x0601b848 func menu_TitleScreen hand loads TITLES.BIN and START_ENV, runs title loop, returns choice
+0x0601bc8c func menu_EmeraldScreen hand loads EMERALD.BIN, Chaos Emerald collection screen with button handling
+0x0601c330 func menu_DrawRecordTimes hand draws lap and total times from tables, flags new records
+0x0601c780 func menu_ResultsScreen hand loads RESULTS.BIN and per-course ENV files BEACH FACTR CAVES CHAOS, runs results loop
+0x0601d31c func menu_UpdateDigitSprites hand provisional; loops four digits, looks up glyph table, writes sprite coordinates and texture words
+0x0601d3dc func menu_UpdateButtonIconSprites hand provisional; sets VDP1 command entries from bitmask bytes, hiding cleared bits, two icon rows
+0x0601d50c func menu_Option2Screen hand loads OPTION2.BIN, sound/controller option screen loop with cursor, pad edge detection, returns selection
+0x0601e444 func pad_PollUntilReady hand provisional; polls peripheral data repeatedly up to 0x80 times until flag byte becomes nonzero
+0x0601e4c4 func pad_ScanControllerTypes hand provisional; scans two peripheral slots, classifies device ids 2/0x15/0x16, builds button masks
+0x0601e868 func game_SnapshotCameraState hand provisional; counter-driven copy of nine-word camera/state blocks, stores snapshot into history table
+0x0601ea4c func frame_StepSyncCounter hand provisional; advances sync counter, calls callback at 3, clears flags
+0x0601eafc func game_SetDoneFlag hand tiny function that sets a global flag to 1
+0x0601eb18 func game_StartTransition hand provisional; sets flag, installs callback pointer and calls two setup functions when idle
+0x0601eb90 func frame_ToggleHalfRate hand toggles a parity flag each call; runs one callback on even frames, another every frame
+0x0601ebd0 func frame_ToggleHalfRate_2 hand same parity toggle as sibling; callback on even frames, second callback every frame
+0x0601ec10 func frame_ToggleHalfRate_3 hand same parity toggle pattern; callback on even frames, second callback always
+0x0601ec50 func stub_0601ec50 hand empty function that only returns
+0x0601ec5c func game_RequestStateChange hand provisional; calls helper with constants then sets a global request flag to 1
+0x0601ec90 func game_StoreCameraHistoryEntry hand provisional; copies nine camera words into indexed table, stores averaged value into two shorts
+0x0601ed30 func ui_StepScrollOffset hand provisional; steps scroll value by 0x20 with clamping depending on direction flag, sets short flag
+0x0601edf4 func stub_0601edf4 hand empty function that only returns
+0x0601ee00 func irq_SetupVectors hand registers handlers for vectors 0x40 and 0x41 between two mask-change calls
+0x0601ee48 func irq_SetupVectors_2 hand registers handlers for vectors 0x40 and 0x41 between two mask-change calls
+0x0601ee90 func irq_SetupVectors_3 hand registers handlers for vectors 0x40 and 0x41 between two mask-change calls
+0x0601eed8 func irq_SetupVectors_4 hand registers vectors 0x40, 0x41, 0x4d and 0x43 with handler chosen by a mode flag
+0x0601ef6c func game_SetSyncMode2 hand calls mode setter with constant 2
+0x0601ef84 func game_SetSyncMode3 hand calls mode setter with 3 and two arguments, then follow-up with global
+0x0601efb4 func game_SetSyncMode4 hand calls mode setter with constant 4
+0x0601efcc func game_SetSyncMode5 hand calls helper with 0 then mode setter with constant 5
+0x0601eff0 func game_SetSyncMode6 hand calls mode setter with 6 then follow-up with global value
+0x0601f01c func sound_PlayCourseMusic hand provisional; picks track number from course table and difficulty bits, calls sound start with 0xf
+0x0601f098 func fx_FadeLoop hand provisional; loop stepping brightness value down by 8 with frame sync each iteration
+0x0601f0f4 func vdp2_SetSplitScreenWindow hand provisional; sets window y range and flag bit by player index, split-screen layout
+0x0601f168 func frame_RunTwoCallbacks hand calls two indirect functions in sequence
+0x0601f188 func util_CallDropThirdArg hand forwards first, second and fourth arguments to another function
+0x0601f1a0 func scsp_SendCommandBuffer hand provisional; calls send routine with buffer and size, then follow-up
+0x0601f1cc func cd_RetryUntilDone hand repeats a wait call and a three-argument operation until it returns zero
+0x0601f20c func smpc_SendCommand hand provisional; waits on busy flag, writes command and parameter bytes, short delay loop, repeats
+0x0601f2c0 func slave_WaitCommandLoop hand slave SH-2 endless loop waiting on flag bit 0x80 then running command callback
+0x0601f31c func replay_RecordPad1 hand records or plays back pad word per frame into replay buffer, masks buttons, ends on -1
+0x0601f3f0 func replay_RecordPads2 hand two-pad version: stores or replays both pad words per frame with mask and end marker
+0x0601f4dc func replay_RecordPad1Alt hand provisional; records pad word into buffer or plays it back, returns value to callback
+0x0601f5c0 func col_TestPlayerPairs hand provisional; runs pairwise collision tests over four player objects, then per-object updates
+0x0601f7c0 func col_TestTwoPlayers hand provisional; decrements timer, runs collision test on pair of objects then three update calls
+0x0601f840 func scene_AdvanceRotation hand provisional; adds 0x28 to masked angle field, copies it to globals, calls helpers
+0x0601f8a4 func render_SetupFrameCamera hand provisional; computes camera position products from shifted values, copies via helper, builds matrix
+0x0601fa40 func render_DrawSceneWrapper hand provisional; calls one function, a second, then the first again
+0x0601fa68 func render_CopyBackdropTiles hand provisional; copies tile data to VRAM, course id 0x66 chooses source and extra copy
+0x0601fb30 func render_DrawRaceFrame hand provisional; big per-frame render: matrices, camera trail, effects, VDP copies, finish
+0x0601ff3c func render_DrawRaceFrameLite hand provisional; smaller per-frame render with camera trail table update and view matrix setup
+0x060202e8 func render_DrawSplitScreenFrame hand provisional; two-player frame render: view matrices, camera products, per-player effect calls, VDP copies
+0x06020670 func render_DrawCharacterSelectFrame hand provisional; renders five objects with matrix setup, sets field 0x66 to 0x14 each, VDP copies
+0x060208e4 func render_DrawSplitScreenFrame_2 hand provisional; builds two viewport matrices from camera values, trail table update, VDP copies
+0x06020ce4 func render_DrawFrameTail hand provisional; camera trail update, two-object draw, limits field 0x5e to 3 above threshold
+0x06020f1c func vdp1_InitCourseViewport hand provisional; switch on course sets screen parameters, then fills 0x60-byte matrix block and copies it
+0x06021124 func math_InitIdentityMatrices hand provisional; writes identity-like 3x3 matrices with fixed one value, then calls two helpers
+0x0602119c func cam_BuildViewRotation hand provisional; sine/cosine products of angle table entries via fixed multiply, builds rotation matrix and writes it
+0x06021308 func cam_BuildViewRotationXY hand provisional; two-angle sine/cosine table lookup builds partial rotation matrix, stores four entries
+0x060213b0 func game_InitRaceGlobals hand provisional; sets over a hundred race state variables and defaults, clears 8-entry table
+0x06021924 func game_InitMenuGlobals hand provisional; initializes small state variables and several coordinate globals to default constants
+0x06021a4c func game_InitDefaultTable hand provisional; fills 24-word table at pointer with default constants
+0x06021b48 func course_LoadEnvironment hand loads per-course BEACH/CITY/FACTR/CAVES/CHAOS and _ENV files by course number, resets state
+0x06021ca4 func frame_WaitIdleAndReset hand provisional; calls two helpers, sets flag, spins until another flag clears, resets state variables
+0x06021cfc func game_InitFivePlayerObjects hand provisional; loads five object positions from table shifted by 12, initial angles, sets ids one to five
+0x06021ef4 func race_InitRaceScene hand provisional; clears VDP2 tile maps, loads graphics blocks by lap, resets tables, sets camera, loads VERSION.BIN
+0x06022760 func menu_InitTilemapScene hand provisional; fills VDP2 tile map 12x10 grid, writes byte table, sets cameras, loads VERSION.BIN
+0x06022998 func menu_InitCharacterPreviewScene hand provisional; loads MSONIC_HID, MILES_HID, MKNUCK_HID or MROBOT_HID with course file, sets up preview camera
+0x06022e50 func sound_LoadDriverAndLevel1Sfx hand loads SDDRVS_TSK sound driver and BEACH LEV1_SFX effects file, sets loaded flag
+0x06022f44 func sound_LoadCourseSfx hand loads course sound effects LEV1-5_SFX or REPLAY1-6_SFX by index if not already loaded

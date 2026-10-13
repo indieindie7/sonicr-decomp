@@ -1,0 +1,93 @@
+0x06023058 func vdp_ResetRegsAndCopy hand provisional: clears hw register, waits on status bits, then copies a word table to a hardware buffer
+0x060230f0 func course_LoadLowDetailData hand loads per-course BEACHLO/CITYLO/FACTRLO/CAVESLO/CHAOSLO_BIN by course id, then copies and finishes
+0x060231e4 func race_InitGraphicsState hand clears work RAM, loads GENGFX.BIN, resets sprite/object tables and builds VDP2 map entries
+0x060238a0 func course_LoadResortIsland hand loads BEACHVRM_BIN, BEACHHI_BIN, patches palette and picks TRACK1_BIN or TRACK1H_BIN
+0x06023a94 func course_LoadRadicalCity hand loads CITYVRM_BIN, CITYHI_BIN, patches palette and picks TRACK2_BIN or TRACK2H_BIN
+0x06023c30 func course_LoadReactiveFactory hand loads FACTRVRM_BIN, FACTRHI_BIN, patches palette and picks TRACK3_BIN or TRACK3H_BIN
+0x06023dcc func course_LoadCaves hand loads CAVESVRM_BIN, CAVESHI_BIN, patches palette and picks TRACK4_BIN or TRACK4H_BIN
+0x06023f68 func course_LoadChaos hand loads CHAOSVRM_BIN, CHAOSHI_BIN, patches palette, picks TRACK5_BIN or TRACK5H_BIN, sets globals
+0x06024120 func vdp2_BuildTilemapFromBlocks hand provisional: expands 16x16 tile blocks into map entries with a per-tile lookup table, DMA copies each row
+0x060242a8 func vdp2_BuildMirroredMapTables hand provisional: builds four 32x32 map tables with increasing cell numbers and XOR-flipped mirror copies, then copies out
+0x060244a4 func vdp2_BuildLinearMapTable hand provisional: fills a 32x32 map table with cell numbers in 8-tile groups and copies it to two destinations
+0x0602456c func race_ResetState hand waits on a flag, resets race counters/modes and selects the per-mode handler pointer by game mode
+0x06024790 func race_LoadAndStart hand per-course init dispatch, loads PLAYERS_BIN and VERSION_BIN, sets up players and starts the race scene
+0x06024a44 func course_InitEffectPointers hand provisional: fills an effect/animation pointer table with offsets from a base address
+0x06024b20 func course_AnimateWaves hand provisional: advances sine-table indices for wave/water offsets with wraparound and updates scroll values
+0x06024d84 func course_AnimateWobble hand provisional: shifts a small sine-driven wobble table and writes two offset words
+0x06024e5c func course_InitEffectPointers_2 hand provisional: fills an effect/animation pointer table with offsets from a base address
+0x06024f40 func course_AnimatePaletteFade hand provisional: cycles five colour-RAM entries by blending two palettes with a 0..32 counter and runs timed sound cues
+0x060251fc func particle_SpawnSpark hand provisional: writes a particle record from a source object using sine lookup and fixed offsets
+0x060252c0 func course_InitEffectPointers_3 hand provisional: fills a larger effect/animation pointer table with offsets from a base address
+0x06025468 func course_UpdateEffects hand provisional: per-frame update of pickup/effect slots (0x2e entries), nearest-slot search, spawns sprites and plays sound 0x25
+0x06025c1c func effect_ResolveFreeSlot hand provisional: finds a slot marked -1 in a 0x2e-entry table and tests a colour-map cell to mark it 0 or 0xfffe
+0x06025d3c func particle_SpawnSpark_2 hand provisional: writes a particle record from a source object using sine lookup and fixed offsets
+0x06025df8 func course_InitEffectPointers_4 hand provisional: fills an effect/animation pointer table with offsets from a base address
+0x06025f60 func particle_UpdateFountain hand provisional: spawns particles with 64-bit fixed-point multiplies for two emitter types and sets lifetime 0x19
+0x060263b4 func particle_SpawnSpark_3 hand provisional: writes a particle record from a source object using sine lookup and fixed offsets
+0x06026478 func course_InitEffectPointers_5 hand provisional: fills an effect pointer table then initialises 0x34-byte particle records from a data stream
+0x06026674 func course_AnimatePaletteScroll hand provisional: scrolls palette/colour data with wrapping index and copies it to colour RAM depending on mode
+0x06026798 func particle_SpawnSpark_4 hand provisional: writes a particle record using sine lookup and advances a wrapping animation counter
+0x0602687c func particle_SpawnBurst hand spawns 0x34-byte particles around position param_1 with random offsets from a byte stream, wraps index at 0x3c
+0x06026a84 func item_ResetCollectedFlags hand sets -1 flags in the item table for ids from per-course lists terminated by 0xffffffff
+0x06026c7c func stub_06026c7c hand tiny function that stores zero to a global flag
+0x06026ca8 func scroll_UpdateOffsets hand adds velocities to six scroll offset values with masking
+0x06026cf8 func sfx_UpdateTimedCues hand triggers sounds 0x21/0x24 at counter start and writes timed sound parameters while a counter runs
+0x06026dc0 func item_ProcessPickup hand matches a picked item type 5, marks it collected, counts to five and plays sound 0x23
+0x06027184 func sound_PlayChannelSet hand plays one to three sound entries on channel param_1 depending on a mode flag
+0x060271f0 func vdp2_CopyScrollTables hand copies scroll table rows derived from masked scroll positions, optionally a second table, and advances a counter
+0x060272d0 func sprite_FillEntryTable hand fills 12-byte sprite/table entries with incrementing indices, optionally for a second set
+0x060273fc func obj_CheckProximityTriggers hand walks a -1 terminated list, computes distance and angle (atan) to the object and calls a trigger when near
+0x060274c0 func course_DispatchInitA hand calls the per-course (1-5) init function then a common one
+0x06027538 func course_DispatchInitB hand calls the per-course (1-5) function; otherwise copies two sets of values between work buffers
+0x06027630 func course_DispatchUpdate hand calls per-course (1-5) update functions, plus a special one when mode is 0x66
+0x060276c4 func call_WrapBracket hand calls a function, then a second with two arguments, then the first again
+0x060276fc func hud_DrawStatusPanel hand provisional: writes HUD sprite vertex words and positions for race mode 2 and player-count variants
+0x06027c14 func hud_DrawStatusPanel_2 hand provisional: writes HUD sprite vertex words for variants chosen by mode and player count
+0x06027eec func hud_DrawTimes hand provisional: formats and prints lap and race times from a player object's timer fields, tracks best lap
+0x060283b4 func hud_ClearPanelArea hand provisional: clears a HUD tile area to a fill value or block-copies a blank pattern depending on mode
+0x06028444 func menu_HandlePadInput hand provisional: edge-detects pad button bits and moves menu cursor values, playing sound 1 on change
+0x0602865c func vdp2_FillTileRect hand fills a rectangle of tilemap entries with consecutive cell numbers, (width/8 by height/8)
+0x060286b0 func vdp2_ClearAndSetPalette hand provisional: copies data, clears a block and writes five palette entries from a table
+0x06028744 func hud_UpdateRaceIndicators hand provisional: updates palette pulse, positional indicators for mode 4 and writes a 0x6d-entry byte patch table
+0x060289c0 func ai_AvoidNearbyRacers hand provisional: loops over other racers computing squared distance and steering angle to avoid close ones
+0x06028da8 func camera_SmoothFollow hand provisional: per-camera spring easing of x/y/z towards target with damping, counters decrement
+0x060290cc func render_ChainTransforms hand provisional: applies a chain of matrix/vector helper calls to param_1 with per-player pieces
+0x06029358 func ai_UpdatePathProgress hand provisional: finds nearest path node for a racer, computes progress along 0xc-byte nodes and lap-wrap corrections
+0x060295bc func race_ClampCheckpointCounters hand provisional: masks three progress counters at +0x50/+0x54/+0x58 and updates best checkpoint by lap state
+0x060296a0 func car_UpdateTrackSector hand provisional: classifies position into a 3-bit sector code from three point tests, handles lap-state transitions at 6/7
+0x06029874 func render_LookupGroundTint hand provisional: scales world x/z, builds a bit-interleaved index and reads a colour value from a lookup table
+0x0602994c func car_UpdateGroundContact hand provisional: sets grounded flag at +0x40 from state/velocity and surface type, adjusts state at +0x2c.. fields
+0x06029b1c func vdp_CopyScrollBuffers hand provisional: copies buffers with a wrapping counter, with mode-dependent extra copy based on player values
+0x06029c58 func player_ApplyHitEffects hand provisional: on state 0x5a picks an animation index from a table and applies per-case adjustments to +0x18 etc.
+0x06029ebc func camera_UpdateFollowLag hand provisional: for the main player updates camera lag value with +/-6 steps and halving, sets timer 0x58
+0x06029ff8 func hud_BumpCounters hand increments five counters by 2 if each is below 3 when no pause flags are set
+0x0602a098 func game_FrameTick hand advances small wrapping frame counters, a pointer ring, calls per-frame helpers and decrements timers
+0x0602a170 func sfx_PlayAlternating hand if mode not 2, alternates sound 0x1d between two ids, then calls sound play with four args
+0x0602a1b8 func music_PlayTrackSequence hand starts a chain of five sound/music parts from a track table depending on mode, then calls finish
+0x0602a2b0 func sfx_PlayPositional hand computes distance of an object, picks sound id and volume by object type switch and plays it if in range
+0x0602a4d8 func car_UpdateEffectsAndSparks hand provisional: large function spawning 0x34-byte effect particles around the object by state and returns flags
+0x0602af48 func stub_0602af48 hand tiny stub that only returns
+0x0602af54 func sys_WaitForFlag hand clears a short flag and spins until it is set (vblank-style wait), then clears it
+0x0602af7c func screen_FadeStepsUp hand loop adjusting three brightness/colour offset registers by param_1 each frame until positive
+0x0602afe4 func screen_FadeStepsDown hand loop lowering three colour offset registers each frame with clamp then calling update helpers
+0x0602b080 func screen_FadeStepsDownSimple hand loop lowering three colour offset registers by param_1 each frame until a limit
+0x0602b0e8 func screen_FadeStateStep hand steps a fade state machine (states 1 and 2) writing the same offset to three colour registers
+0x0602b1d0 func sound_LoadPlayerSamples hand loops over five voices, setting buffer addresses and copying sample data into sound RAM
+0x0602b278 func sound_UpdateEnginePitchSamples hand recomputes per-car sound buffers when value changes and copies via helpers, for single or split-screen
+0x0602b4ac func obj_SelectModelByType hand provisional: maps type id 0-9 at +offset to a data constant, overridden when mode is 3
+0x0602b69c func model_LoadPackedData hand provisional: copies packed model sections to destinations and relocates pointers by base offset
+0x0602ba1c func call_TwoStepA hand calls one function with a constant and param_1, then another with the constant and params 2 and 3
+0x0602ba5c func call_TwoStepB hand calls one function with a global and param_1, then another with that global and params 2 and 3
+0x0602ba9c func list_PushTriple hand appends three words to a list and advances the index by 3
+0x0602bac8 func list_FlushToRegisters hand terminates a triple list with zero, then writes each triple to hardware registers waiting on a busy bit 0x10
+0x0602bb40 func hw_WriteTripleAndWait hand writes three words plus fixed values (counts, 7) to a register block then waits on a busy bit 0x10
+0x0602bbc8 func call_FiveTimes hand calls one function five times with five different pointer arguments
+0x0602bc10 func hud_DrawGaugeBars hand provisional: draws status bars/meters for states 5 and 7 and others, sizes from object fields clamped 0..max
+0x0602c4c0 func title_LoadScreen hand loads TITLES_BIN, sets up VDP2 plane regs, builds 22x14 tilemap and copies it
+0x0602c6dc func ending_LoadScreen hand loads ENDING_BIN and CREDITS_BIN, sets VDP2 regs, builds 22x14 tilemap and checks a code
+0x0602ca10 func option_LoadScreen hand loads OPTION2_BIN, sets VDP2 regs, builds 22x14 tilemap and branches on mode
+0x0602cc8c func ai_LoadPathFile hand loads PATH1_BIN to PATH4_BIN by selected path id and sets AI path variables
+0x0602cddc func obj_InitRacerState hand zeroes and initialises a racer object's fields, copies position to previous position
+0x0602cf7c func car_ApplyVelocityStep hand provisional: converts velocity to vector magnitude scaled by param_2, normalises and applies to the object's speed fields
+0x0602d16c func car_HandleSurfaceFlags hand provisional: reads surface flags from the track table and sets state 0x26/0x27/0x28 or applies boost/slide to velocity
+0x0602d2a0 func car_UpdatePhysics hand provisional: main per-frame racer update: loads handling params from a 0x28-byte table, saves previous position and applies input flags

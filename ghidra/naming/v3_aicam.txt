@@ -1,0 +1,1 @@
+0 0x060289c0 ai_AvoidNearbyRacers RENAME racer_CheckContactRingScatter spawns scattered rings and subtracts 10 from a counter on contact; it does not steer

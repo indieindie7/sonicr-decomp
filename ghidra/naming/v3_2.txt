@@ -1,0 +1,7 @@
+0 0x06021924 game_InitMenuGlobals RENAME game_InitBootGlobals called once from game_MainLoop at boot after region read; zeroes flags and sets a 4x5 default table of constants, nothing menu specific
+0 0x06022760 menu_InitTilemapScene RENAME race_InitSceneWithTilemap fills a 12x10 sequential tile grid then runs race_SetupCourse, car_InitRacerSlots, cam setup, race_ResetState; scene init for mode 3 sub 4, not menu logic
+0 0x06028da8 item_UpdateHomingProjectiles CONFIRM item_UpdateHomingProjectiles 4 slots x12 bytes: timer, target racer, projectile springs to racer, drops trail sparks in 60-entry ring, on hit sets racer velocity/state flags and frees slot
+0 0x060321f4 pad_GetDeviceIdNibble RENAME pad_LowNibbleOfByte2Shl8 returns (byte[2] & 0xf)<<8; device-id meaning not shown by code
+0 0x06032258 pad_GetDeviceIdNibble_2 RENAME pad_LowNibbleOfByte2Shl8Dup identical body to pad_LowNibbleOfByte2Shl8 (duplicate copy), only caller pad_CopyDataRows
+0 0x06038094 pad_PollRepeat RENAME pad_QueueRepeatedCommands while count>0 and index<limit writes buffer bytes (const, 0xf) and advances index; fills INTBACK request buffer
+0 0x06038158 pad_ProcessConfigCopy RENAME pad_CopyDataRowsTwice builds six-word arg block on stack from pad globals, calls pad_CopyDataRows and again if it returns nonzero

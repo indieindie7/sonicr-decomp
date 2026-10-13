@@ -1,0 +1,15 @@
+0x06004054 func gfx_ApplyPaletteDelta hand provisional: copies 64 shorts then applies XOR byte patches from stream, counted records
+0x060040e4 func gfx_BuildViewMatrixTable hand provisional: huge master-side setup shifting camera/view values <<8 into transform table, selects buffer by flag
+0x06004b52 func math_TransformVertexLoop hand provisional: fragment looping 32x32 signed fixed multiplies emulating dmuls, vertex projection
+0x06004c5c func dma_StreamNextBlock hand provisional: reads next list entry, programs SCU DMA registers, double-buffers, calls transform callee
+0x06004d40 func gfx_TransformObjectToView hand provisional: translates point and builds rotation matrix from sine table angles, writes view matrix
+0x06004f40 func gfx_ProjectRowsClearBuffer hand provisional: zeroes 128x8 word buffer then projects and clips vertices via shifts and thresholds
+0x06005080 func gfx_ProjectRowsClearBuffer_2 hand provisional: variant of row buffer clear and vertex projection with clipping
+0x060051c8 func gfx_ProjectRowsClearBuffer_3 hand provisional: variant of row buffer clear and vertex projection with clipping
+0x060052f8 func gfx_ProjectRowsClearBuffer_4 hand provisional: variant of row buffer clear and vertex projection with clipping
+0x06005424 func gfx_TransformTrackPolygons hand provisional: very large unrolled fixed-point polygon transform with mac multiplies for track geometry
+0x06005770 func gfx_ProjectPointToScreen hand provisional: subtracts camera, rotates by view matrix, perspective clip between near and far limits
+0x06005b88 func gfx_DecodeTrackStripDelta hand provisional: updates byte strip buffers by delta between current and previous scroll position
+0x06005de0 func gfx_BuildPolygonFromAngles hand provisional: per-entry matrix products from table angles, fixed-point mulh, builds polygon records
+0x0600607c func gfx_ProcessPolygonRing hand provisional: walks ring buffer of 16-byte records with wrap, sorts and transforms polygon entries
+0x060062e0 func gfx_TransformPolygonRecord hand provisional: signed 32x32 fixed multiply of record fields, transforms polygon vertices

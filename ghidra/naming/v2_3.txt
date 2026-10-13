@@ -1,0 +1,30 @@
+0 0x060202e8 render_DrawSplitScreenFrame CONFIRM render_DrawSplitScreenFrame selected by race_ResetState for multi-car modes
+0 0x06020670 render_DrawCharacterSelectFrame RENAME render_DrawFiveRacerFrame updates five cars and collisions, not a menu
+0 0x060208e4 render_DrawSplitScreenFrame_2 RENAME render_DrawTwoPlayerRaceFrame selected for mode 1 with two cars
+0 0x06020ce4 render_DrawFrameTail UNSURE render_DrawFrameTail two-car frame body but not directly called
+0 0x06020f1c vdp1_InitCourseViewport CONFIRM vdp1_InitCourseViewport course switch sets projection params, called from race_LoadAndStart
+0 0x06021124 math_InitIdentityMatrices RENAME cam_SetupViewMatrix builds identity and calls view rotation builders every render frame
+0 0x0602119c cam_BuildViewRotation CONFIRM cam_BuildViewRotation sine/cosine rotation build
+0 0x06021308 cam_BuildViewRotationXY CONFIRM cam_BuildViewRotationXY two-angle partial rotation
+0 0x060213b0 game_InitRaceGlobals CONFIRM game_InitRaceGlobals resets race state, called by menus and race init
+0 0x06021924 game_InitMenuGlobals UNSURE game_InitMenuGlobals called once at boot, menu role unproven
+0 0x06021a4c game_InitDefaultTable RENAME save_InitSlotDefaults fills default table for a save slot, called by save_StoreSlotAndWrite
+0 0x06021ca4 frame_WaitIdleAndReset RENAME screen_FadeOutAndWait fade down 8, set flag, spin on flag
+0 0x06021cfc game_InitFivePlayerObjects CONFIRM game_InitFivePlayerObjects five racer start positions and ids 1-5
+0 0x06021ef4 race_InitRaceScene CONFIRM race_InitRaceScene race scene init from game_MainLoop
+0 0x06022760 menu_InitTilemapScene UNSURE menu_InitTilemapScene tilemap plus race setup calls, role unclear
+0 0x06022998 menu_InitCharacterPreviewScene CONFIRM menu_InitCharacterPreviewScene loads per-character HID files, sets preview camera
+0 0x06023058 vdp_ResetRegsAndCopy CONFIRM vdp_ResetRegsAndCopy boot register reset and table copy
+0 0x06024120 vdp2_BuildTilemapFromBlocks CONFIRM vdp2_BuildTilemapFromBlocks called by all five course loaders
+0 0x060242a8 vdp2_BuildMirroredMapTables CONFIRM vdp2_BuildMirroredMapTables called by four course loaders
+0 0x060244a4 vdp2_BuildLinearMapTable CONFIRM vdp2_BuildLinearMapTable called only by course_LoadChaos
+0 0x06024a44 course_InitEffectPointers RENAME course_InitChaosEffects dispatched for course 5 only by course_DispatchInitA
+0 0x06024b20 course_AnimateWaves CONFIRM course_AnimateWaves course 5 per-frame sine wave offsets via DispatchInitB
+0 0x06024d84 course_AnimateWobble CONFIRM course_AnimateWobble course 5 sine wobble table via DispatchUpdate
+0 0x06024e5c course_InitEffectPointers_2 RENAME course_InitCavesEffects dispatched for course 4 only by course_DispatchInitA
+0 0x06024f40 course_AnimatePaletteFade CONFIRM course_AnimatePaletteFade course 4 palette blend counter and timed sfx via DispatchInitB
+0 0x060251fc particle_SpawnSpark RENAME particle_UpdateCavesEmitter course 4 only; copies source object fields into particle record via DispatchUpdate
+0 0x060252c0 course_InitEffectPointers_3 RENAME course_InitFactoryEffects dispatched for course 3 only by course_DispatchInitA
+0 0x06025468 course_UpdateEffects CONFIRM course_UpdateEffects course 3 per-frame slot update, nearest-slot search, sfx 0x25
+0 0x06025c1c effect_ResolveFreeSlot CONFIRM effect_ResolveFreeSlot called for course 3 from race_UpdateEndConditions, resolves slots marked -1
+0 0x06025d3c particle_SpawnSpark_2 RENAME particle_UpdateFactoryEmitter course 3 only; copies source object fields into particle record via DispatchUpdate

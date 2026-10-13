@@ -1,0 +1,30 @@
+0 0x06025df8 course_InitEffectPointers_4 RENAME course_InitFountainPointers called for course 2 only; fills pointer table used by the fountain update
+0 0x06025f60 particle_UpdateFountain CONFIRM particle_UpdateFountain per-frame course 2 update spawning fountain particles with emitters and palette scroll
+0 0x060263b4 particle_SpawnSpark_3 CONFIRM particle_SpawnSpark_3 per-frame particle record writer for course 2 from source object with sine lookup
+0 0x06026478 course_InitEffectPointers_5 CONFIRM course_InitEffectPointers_5 course 1 init fills pointer table and seeds 0x34-byte particle records
+0 0x06026674 course_AnimatePaletteScroll CONFIRM course_AnimatePaletteScroll course 1 per-frame palette scroll copy via list push
+0 0x06026798 particle_SpawnSpark_4 CONFIRM particle_SpawnSpark_4 per-frame course 1 particle record writer with wrapping counter
+0 0x060276fc hud_DrawStatusPanel CONFIRM hud_DrawStatusPanel writes HUD tile maps per player count, called from camera snapshot path
+0 0x06027c14 hud_DrawStatusPanel_2 RENAME hud_DrawTwoPlayerPanel draws times for two player objects (0600b39c and 0600b56c) and compares their positions; chosen by caller when 0600b174 is set
+0 0x06027eec hud_DrawTimes CONFIRM hud_DrawTimes prints lap/race time digits from a player object timer fields and tracks best lap
+0 0x060283b4 hud_ClearPanelArea CONFIRM hud_ClearPanelArea caller picks it in mode 1 instead of status panel; fills tile rect with blank
+0 0x06028444 menu_HandlePadInput RENAME menu_HandlePauseInput edge-detects pad bits to move a selection, clears menu tile rows, resets pause flag 0600bcbc and calls sync mode on confirm; called from main loop
+0 0x060286b0 vdp2_ClearAndSetPalette RENAME vdp2_SetRacerPaletteEntries copies a block, zeroes a region, then writes five colour entries one per racer object from a table
+0 0x06028744 hud_UpdateRaceIndicators RENAME hud_DrawMinimapDots scales each racer position by divsi3 into 0x5c-bound x/y and plots pixels into a bitmap per racer; called each frame in vdp1 swap
+0 0x060289c0 ai_AvoidNearbyRacers CONFIRM ai_AvoidNearbyRacers squared distance and atan2 to nearby racers, sets avoid timer; called from car movement for AI cars
+0 0x06028da8 camera_SmoothFollow RENAME item_UpdateHomingProjectiles 4 slots (0xc bytes: timer, target racer, projectile) spring-chase target pos, spawn 0x34 particle records, and kick the racer on contact; not a camera; called each render frame
+0 0x060290cc render_ChainTransforms RENAME render_TransformRacersAndTrack chains gfx_TransformPolygonRecord and TransformTrackPolygons per racer (2 or all 5) plus vertex-clip shadows; list pointer threaded through
+0 0x06029358 ai_UpdatePathProgress RENAME race_UpdateProgressAndPlaces nearest waypoint progress per racer with lap wrap, then bubble-sorts progress of 5 racers and writes place 1-5 into each racer
+0 0x060295bc race_ClampCheckpointCounters RENAME race_UpdateBestLapTime masks three lap-time counters and updates global best (0600b164) per lap number, plays sound on change; called on lap crossing
+0 0x060296a0 car_UpdateTrackSector RENAME race_UpdateLapCrossing three point-side tests give 3-bit code; transition 7 to 6 across the line increments lap counter at +0x5e and calls best-lap update
+0 0x06029874 render_LookupGroundTint RENAME car_LookupGroundMapValue scales racer x/z into a bit-interleaved tile index and stores a value from a lookup table into the racer at +0x40; called per racer each frame
+0 0x0602994c car_UpdateGroundContact CONFIRM car_UpdateGroundContact sets grounded flag at +0x40 from state and velocity/surface type; called per racer each render frame
+0 0x06029b1c vdp_CopyScrollBuffers CONFIRM vdp_CopyScrollBuffers memcpy plus list push into ring-indexed (mask 0xf) buffers, extra copy in mode branch; called from vdp1 sync
+0 0x06029c58 player_ApplyHitEffects CONFIRM player_ApplyHitEffects at hit timer +0x66==0x5a picks outcome 1-6 and adjusts fields, counts timer down, draws hit icon; called per racer in render frame
+0 0x06029ebc camera_UpdateFollowLag RENAME player_DrawHitIndicator no camera work: draws projected marker for racer when +0x66 timer active via TransformProjectVertex(Clip) with spring value; called per racer in frame tail
+0 0x0602a4d8 car_UpdateEffectsAndSparks CONFIRM car_UpdateEffectsAndSparks spawns 0x34-byte dust/spark particles in ring of 60 around racer by state and slip; called per racer from every race render frame
+0 0x0602b4ac obj_SelectModelByType RENAME obj_LoadRacerModel picks one of 10 character model blobs by racer id (or preview blob in mode 3), copies and relocates vertex/command data; called per racer at race load and preview
+0 0x0602b69c model_LoadPackedData CONFIRM model_LoadPackedData copies packed sections from a data blob and relocates pointers by base offset; called from race load
+0 0x0602bc10 hud_DrawGaugeBars RENAME car_SelectAnimationAndCopyFrame per racer (called 5x by call_FiveTimes): copies sprite frame data for states 5/7/8 then picks animation index from velocity and state and sets frame timer
+0 0x0602cf7c car_ApplyVelocityStep RENAME car_ComputeWallSlideVelocity builds step vector of length param_2 along heading, compares with last-frame position delta and projects it (dot product) to slide velocity; called from car_UpdatePhysics
+0 0x0602d16c car_HandleSurfaceFlags CONFIRM car_HandleSurfaceFlags reads per-sector surface flags from track table, applies boost to velocity or sets course-specific state 0x26/0x27/0x28; called from car_UpdatePhysics

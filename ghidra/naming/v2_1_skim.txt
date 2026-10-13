@@ -1,0 +1,30 @@
+0 0x06004054 gfx_ApplyPaletteDelta CONFIRM gfx_ApplyPaletteDelta copies 64-color table then XOR-patches bytes from stream; callers are menu reset and race start
+0 0x060040e4 gfx_BuildViewMatrixTable UNSURE gfx_BuildViewMatrixTable huge per-object transform pass called from vdp1 swap before DMA streaming; exact output unclear
+0 0x06004b52 math_TransformVertexLoop UNSURE math_TransformVertexLoop fragment only reached from gfx_BuildViewMatrixTable; no standalone evidence
+0 0x06004c5c dma_StreamNextBlock CONFIRM dma_StreamNextBlock advances object list, programs SCU DMA with double buffer, then builds polygons; called in loop from vdp1 swap
+0 0x06004d40 gfx_TransformObjectToView CONFIRM gfx_TransformObjectToView called per list object by dma_StreamNextBlock and dma_StartNextFileBlock to build its view matrix
+0 0x06004f40 gfx_ProjectRowsClearBuffer RENAME gfx_DepthBucketSortCmds clears 128 depth buckets then chains VDP1 command entries by depth key; called from vdp1 command swap
+0 0x06005080 gfx_ProjectRowsClearBuffer_2 RENAME gfx_DepthBucketSortCmdsFlagCheck same depth-bucket command chaining but skips entries by a flag byte test
+0 0x060051c8 gfx_ProjectRowsClearBuffer_3 RENAME gfx_DepthBucketSortCmdsVariantC variant of depth-bucket VDP1 command chaining used by vdp1 swap
+0 0x060052f8 gfx_ProjectRowsClearBuffer_4 RENAME gfx_DepthBucketSortCmdsVariantD variant of depth-bucket VDP1 command chaining used by vdp1 swap
+0 0x06005424 gfx_TransformTrackPolygons CONFIRM gfx_TransformTrackPolygons large unrolled MAC transform of track geometry; calls point projection
+0 0x06005770 gfx_ProjectPointToScreen CONFIRM gfx_ProjectPointToScreen subtracts camera, rotates, perspective with near/far clip; used by track polygon transform
+0 0x06005b88 gfx_DecodeTrackStripDelta CONFIRM gfx_DecodeTrackStripDelta updates strip buffers by scroll delta; called from dma_StartNextFileBlock
+0 0x06005de0 gfx_BuildPolygonFromAngles CONFIRM gfx_BuildPolygonFromAngles per-entry matrices from angle table then polygon records; called by dma_StreamNextBlock
+0 0x0600607c gfx_ProcessPolygonRing CONFIRM gfx_ProcessPolygonRing walks ring of 16-byte records and transforms them; called from every race frame draw
+0 0x060062e0 gfx_TransformPolygonRecord CONFIRM gfx_TransformPolygonRecord fixed multiply transform of polygon vertices; called by split-screen and chain transform draw
+0 0x0600658c gfx_TransformProjectVertex CONFIRM gfx_TransformProjectVertex 3x3 rotate plus reciprocal-table perspective; used by hit effects and camera follow
+0 0x060066b0 gfx_TransformProjectVertexClip CONFIRM gfx_TransformProjectVertexClip projection with depth index range check and clip table select
+0 0x060067c4 gfx_TransformProjectVertexClip_2 RENAME gfx_TransformProjectVertexClipBiased projection variant with +0x60 depth bias and table limit; used by split-screen draw
+0 0x060069fc fx_UpdateSpriteParticles CONFIRM fx_UpdateSpriteParticles lifetime countdown and velocity step; called by race, lite, split and character-select frames
+0 0x06006be4 fx_UpdateSpriteParticles_2 RENAME fx_UpdateSpriteParticlesFrameTail particle update variant called only from render_DrawFrameTail
+0 0x06006dbc fx_UpdateAnimatedObjects CONFIRM fx_UpdateAnimatedObjects steps object frame counters and projects; called by race frame draws
+0 0x06007068 fx_UpdateAnimatedObjects_2 RENAME fx_UpdateAnimatedObjectsFrameTail animated object update variant called only from render_DrawFrameTail
+0 0x06007314 fx_UpdateSpriteParticles_3 RENAME fx_UpdateSpriteParticlesSplit2 particle update variant called only from render_DrawSplitScreenFrame_2
+0 0x060074a8 gfx_TransformObjectList CONFIRM gfx_TransformObjectList walks object list transforming and projecting vertices; called by split-screen draw
+0 0x06007688 gfx_MultiplyAccumulateRows RENAME math_MatrixMultiplyRows sign-magnitude 32x32 multiply accumulate rows; sole caller is math_BuildRotationMatrix so it is matrix multiply
+0 0x060077ea gfx_RenderPolyListDivu RENAME gfx_CullAndBucketPolyList clears 8x4 bucket heads, back-face culls triangles by cross product, links visible ones by DIVU depth; caller sets up view matrices
+0 0x060079ac gfx_ProjectVertexToScreen CONFIRM gfx_ProjectVertexToScreen perspective projection of one vertex with sqrt loop; called from mesh rasterize setup
+0 0x060085a0 math_DivuSetup64 RENAME math_DotProduct2Divide64 computes 64-bit a*b+c*d via emulated MAC then writes it to DIVU and returns quotient; used by car physics and path projection
+0 0x06008b70 track_FindSegmentByDistance CONFIRM track_FindSegmentByDistance scans 8-byte entries by squared 3D distance vs radius squared; used by item pickup
+0 0x060180dc race_UpdateEndConditions CONFIRM race_UpdateEndConditions per-frame finish, pause, and timeout flag handling called from game_MainLoop

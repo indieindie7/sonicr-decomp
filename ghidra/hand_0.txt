@@ -1,0 +1,391 @@
+0x06004054 func gfx_ApplyVisibilityMaskDelta hand copies 64 shorts then applies XOR byte patches from stream, counted records (was gfx_ApplyPaletteDelta)
+0x060040e4 func gfx_CullMaskedBlocksToList hand huge master-side setup shifting camera/view values <<8 into transform table, selects buffer by flag (was gfx_BuildViewMatrixTable)
+0x06004b52 func gfx_TestDepthRangeAndProjectBlock hand fragment looping 32x32 signed fixed multiplies emulating dmuls, vertex projection (was math_TransformVertexLoop)
+0x06004c5c func dma_StreamNextBlock hand reads next list entry, programs SCU DMA registers, double-buffers, calls transform callee
+0x06004d40 func gfx_TransformObjectToView hand translates point and builds rotation matrix from sine table angles, writes view matrix
+0x06004f40 func gfx_SortVdp1CmdsThreeTierFade hand zeroes 128x8 word buffer then projects and clips vertices via shifts and thresholds (was gfx_ProjectRowsClearBuffer)
+0x06005080 func gfx_SortVdp1CmdsThreeTierFadeSkipFlagged hand variant of row buffer clear and vertex projection with clipping (was gfx_ProjectRowsClearBuffer_2)
+0x060051c8 func gfx_SortVdp1CmdsNearFadeShift5 hand variant of row buffer clear and vertex projection with clipping (was gfx_ProjectRowsClearBuffer_3)
+0x060052f8 func gfx_SortVdp1CmdsNearFadeClamped hand variant of row buffer clear and vertex projection with clipping (was gfx_ProjectRowsClearBuffer_4)
+0x06005424 func gfx_TransformRacerPartPolygons hand very large unrolled fixed-point polygon transform with mac multiplies for track geometry (was gfx_TransformTrackPolygons)
+0x06005770 func gfx_CullObjectBuildPartViewMatrices hand subtracts camera, rotates by view matrix, perspective clip between near and far limits (was gfx_ProjectPointToScreen)
+0x06005b88 func gfx_UpdateMaskAndBuildVisibleObjectList hand updates byte strip buffers by delta between current and previous scroll position (was gfx_DecodeTrackStripDelta)
+0x06005de0 func gfx_ProjectQuadsToVdp1Commands hand per-entry matrix products from table angles, fixed-point mulh, builds polygon records (was gfx_BuildPolygonFromAngles)
+0x0600607c func gfx_TransformPlayerTrailRing hand walks ring buffer of 16-byte records with wrap, sorts and transforms polygon entries (was gfx_ProcessPolygonRing)
+0x060062e0 func gfx_DrawRacerShadowSprite hand signed 32x32 fixed multiply of record fields, transforms polygon vertices (was gfx_TransformPolygonRecord)
+0x0600658c func gfx_TransformObjectPosAddY hand 3x3 matrix multiply of vertex via MAC emulation, reciprocal table lookup for perspective, writes projected vertex backwards (was gfx_TransformProjectVertex)
+0x060066b0 func gfx_TransformObjectPosAddYSelectTable hand like projection transform but with 0x3b range check on depth index and clip table select (was gfx_TransformProjectVertexClip)
+0x060067c4 func gfx_TransformObjectPosAddYSetSpriteIdx hand projection transform variant with +0x60 depth bias and table limit check (was gfx_TransformProjectVertexClip_2)
+0x060069fc func fx_UpdateSpriteParticles hand loads 4x4 matrix shifted <<8, steps particles with lifetime counter at +0x1e, accumulates velocity/frame animation
+0x06006be4 func fx_UpdateSpriteParticlesKeepOffscreen hand particle list update variant with matrix setup, lifetime countdown, velocity integration (was fx_UpdateSpriteParticles_2)
+0x06006dbc func fx_UpdateHomingSprites hand steps object records, frame counter at +0x20 below 2 branch, matrix transform and projection (was fx_UpdateAnimatedObjects)
+0x06007068 func fx_UpdateHomingSpritesAltList hand second variant of animated object update with frame counter check and transform (was fx_UpdateAnimatedObjects_2)
+0x06007314 func fx_DrawSpriteParticlesNoStep hand particle update variant with lifetime counter at +0x1e and matrix transform (was fx_UpdateSpriteParticles_3)
+0x060074a8 func fx_DrawHomingSpritesNoStep hand walks object list applying transform matrix and projecting vertices (was gfx_TransformObjectList)
+0x06007688 func math_ConcatMatrixRowsTranslate hand loops over rows doing sign-magnitude 32x32 multiply emulation, fixed-point accumulate (was gfx_MultiplyAccumulateRows)
+0x0600773c func gfx_ClearZBufferTable hand clears 0x200 blocks of 16 words (0x2000 bytes) of a buffer, zero-fill backwards
+0x060077ea func gfx_CullAndBucketPolysByDepth hand clears 32 words, back-face test via cross product of vertices at +0x24/+0x28, uses DIVU 0xffffff00 (was gfx_RenderPolyListDivu)
+0x060078b6 func gfx_RasterizeMeshSetup hand copies 3x3 matrix, clears span buffer, rasterizes each triangle via FUN_060079ac and FUN_06007c48
+0x060079ac func gfx_TransformMeshVertexOnDemand hand projects one vertex with perspective, calls sqrt-like bit loop FUN_06007b3c, 64-bit multiplies (was gfx_ProjectVertexToScreen)
+0x06007b3c func math_IntSqrtBitLoop hand binary-search integer square root over table, 12 iterations of shifted bit tests
+0x06007c48 func gfx_RasterizeTriangleSpans hand sorts three vertices by y (+0x28), steps edge spans, calls FUN_06007ef8 for each scanline
+0x06007ef8 func gfx_DrawTexturedSpan hand fills 16-bit scanline from texture via u/v fixed-point stepping, 256-wide texture, DIVU for span length
+0x06008014 func math_Sqrt16_16 hand 16.16 fixed square root using DIVU Newton iteration, returns 0xffff0000 on negative
+0x06008058 func math_Atan2 hand octant selection by signs and magnitudes, DIVU ratio, jump table of per-octant routines
+0x0600858e func math_MulDiv64 hand 64-bit multiply of two args divided by DIVU divisor, returns quotient
+0x060085a0 func math_DotProduct2DFixed hand writes 64-bit dividend and divisor to DIVU registers and returns result (was math_DivuSetup64)
+0x060085f4 func stub_060085f4 hand tiny stub calling function pointer with argument 1
+0x0600867e func fx_UpdateDebrisPieces hand updates 0x2e debris entries: timers, velocity from sin/cos tables, gravity at +0x18/+8, wrap on masks
+0x06008768 func math_BuildReciprocalTable hand fills table backwards with DIVU results 1/n per entry, then pads remainder with constant
+0x0600878e func math_PointOnLineSide hand compares point against segment (x1,y1)-(x2,y2) with DIVU slope, major-axis choice, returns side
+0x060088a6 func stub_060088a6 hand clears two globals then calls function pointer, small wrapper
+0x06008944 func cd_SendCommandChecked hand stores command pointer, same-pointer test sets mode 7 else 1, calls handler, clears on done
+0x060089c8 func cd_SendCommand3 hand stores three args to globals and calls handler function pointer
+0x06008a1c func stub_06008a1c hand calls function pointer and returns its result
+0x06008a28 func vdp1_OrCommandFlagsRange hand ORs flag into word 2 of 0x20-byte VDP1 command entries between two pointers
+0x06008a58 func vdp1_OrCommandFlagsAdjustRange hand ORs flags into VDP1 command entries and shifts vertex words by 0x70 depending on mask
+0x06008adc func stub_06008adc hand writes 0 then 0x11 to a global byte, small state reset
+0x06008ae8 func stub_06008ae8 hand duplicate of 06008adc, writes 0 then 0x11 to a global
+0x06008b0c func sys_WaitInterruptFlag hand spins until global nonzero and status below 0x23 or bit 0x22 set
+0x06008b2a func sys_WaitVBlankAck hand polls flag bit 0x20, clears it, waits for status mask clear, sets bit 0x10, returns 0x10
+0x06008b70 func item_FindPickupInRadius hand walks 8-byte segment entries, squared 3D distance from point vs radius squared, returns segment data (was track_FindSegmentByDistance)
+0x06008c04 func memcpy_6 hand byte copy loop of param_3 bytes from src to dst
+0x06008c18 func memset_6 hand fills param_3 bytes with value, going backwards from end
+0x06008c28 func vdp2_WriteTileMapBlock hand writes VDP2 pattern name words for 3 rows of tiles from table index and offset
+0x06008cc4 func vdp2_WriteTileMap3x3 hand writes 3x3 consecutive pattern name entries with row stride
+0x06008d04 func vdp2_WriteTileMap2x2 hand writes 2x2 pattern name entries with row stride from table base
+0x06008d60 func hud_DrawTimerDigits hand uses DIVU by 10 and 6 to split time into digits, writes VDP2 tile entries for race timer
+0x06008e08 func hud_DrawNumberDigits hand writes VDP2 tile pairs for digits using DIVU by 10 and 6, fixed fallback pattern above threshold
+0x06008eec func fx_CollectRingsNear5 hand scans object list for type 0 entries, tests 5 character positions within range, ring pickup check
+0x06009138 func fx_CollectRingsNear2 hand ring/item proximity test against 2 characters, same record scan as 06008eec
+0x0600928c func fx_BreakItemsNearPlayer hand marks items type 0x5a within squared radius of player, spawns 0x20-byte effect entry in ring buffer
+0x060093a0 func gfx_BuildWaterRippleLines hand builds per-line sine offset table from height words, writes line scroll entries for water
+0x060094e4 func gfx_BuildFloorLineZTable hand per-line depth via DIVU, stores 16-bit depth shifted >>9 or max for floor perspective
+0x06009568 func ai_NearestWaypointXZ hand finds nearest of N 12-byte points by squared XZ distance offset by given values, returns index
+0x060095cc func ai_NearestWaypointXYZ hand finds nearest 12-byte waypoint by squared 3D distance, returns index counted from start
+0x06009658 func ai_NearestWaypointXYZ_2 hand duplicate of 060095cc using a different max distance constant and count
+0x0600980c func ai_NearestPointXZShort hand nearest of 16-byte entries by squared distance using 16-bit coords, returns index
+0x0600a7e8 func rnc_Unpack2 hand RNC method 2 decompressor; reads sizes from header, bit-stream literal and match loop
+0x06017a3c func game_MainLoop hand boot and main state loop; loads VERSION.BIN and PERMGFX.BIN, runs title, menu and race flow
+0x060180dc func race_EndOfFrameSyncPauseFinish hand ; checks pad bits and race state, sets finish and timeout flags and timers (was race_UpdateEndConditions)
+0x06018418 func frame_WaitSyncAdvanceState hand ; waits on a flag, runs sync callbacks, sets game state to 3
+0x06018494 func pad_CheckAllButtonsHeld hand tests pad word masks for both pads, resets state on transitions
+0x0601853c func cam_BuildViewMatrices hand builds 3x4 rotation matrix from yaw, pitch and roll via sine table, writes three scaled copies
+0x0601892c func dma_StartNextStreamBlock hand ; picks next table entry and programs SCU DMA registers (was dma_StartNextFileBlock)
+0x06018a30 func vdp1_SwapCommandListsAndSync hand ; frame sync, copies command buffers, SCU DMA transfer
+0x06018ed0 func cam_CalcLookAtAngles hand computes yaw and pitch from camera position to target
+0x06018fb8 func cam_GetNegatedTargetPos hand returns negated target position from object offsets +8, +10, +12
+0x06018fe4 func cam_EaseZoomSpeed hand eases value at offset 0x16 toward 0x12 or 0x40 in steps of 2
+0x06019038 func cam_UpdateFollowSmooth hand follow camera with mode 4 offset and smoothing of position and angles
+0x06019548 func cam_UpdateFollowSimple hand simpler follow camera with same offset math, copies results directly
+0x06019760 func cam_UpdateTrackViewpoints hand switch over four camera modes, nearest viewpoint table lookup, timer 0x78
+0x06019cac func gfx_ResetMenuState hand ; clears tables, loads BIG_R.BIN, ICONS.BIN or ICONS2.BIN, VERSION.BIN
+0x06019e90 func cam_InitFromTarget hand copies target position and angles scaled by shift 4
+0x06019ee0 func menu_UpdateOptionsCursors hand ; moves selection by character table, steps toward target (was menu_UpdateSelectionScroll)
+0x0601a32c func vdp2_CopyTiledRect hand copies a rectangle between swizzled 8x8-tile layouts
+0x0601a428 func menu_OptionsScreen hand runs options screen, loads OPTIONS.BIN, handles pad input
+0x0601b4a4 func menu_UpdateTitleCamera hand ; sine-driven sway plus pad-controlled offsets and decay (was menu_UpdateFreeLookCamera)
+0x0601b848 func menu_TitleScreen hand loads TITLES.BIN and START_ENV, runs title loop, returns choice
+0x0601bc8c func menu_EmeraldScreen hand loads EMERALD.BIN, Chaos Emerald collection screen with button handling
+0x0601c330 func menu_DrawRecordTimes hand draws lap and total times from tables, flags new records
+0x0601c780 func menu_ResultsScreen hand loads RESULTS.BIN and per-course ENV files BEACH FACTR CAVES CHAOS, runs results loop
+0x0601d31c func menu_UpdateDigitSprites hand ; loops four digits, looks up glyph table, writes sprite coordinates and texture words
+0x0601d3dc func menu_UpdateButtonIconSprites hand ; sets VDP1 command entries from bitmask bytes, hiding cleared bits, two icon rows
+0x0601d50c func menu_Option2Screen hand loads OPTION2.BIN, sound/controller option screen loop with cursor, pad edge detection, returns selection
+0x0601e444 func pad_PollUntilReady hand ; polls peripheral data repeatedly up to 0x80 times until flag byte becomes nonzero
+0x0601e4c4 func pad_ScanControllerTypes hand ; scans two peripheral slots, classifies device ids 2/0x15/0x16, builds button masks
+0x0601e868 func irq_VBlankHudAndRotParams hand ; counter-driven copy of nine-word camera/state blocks, stores snapshot into history table (was game_SnapshotCameraState)
+0x0601ea4c func irq_VBlankPadScan hand ; advances sync counter, calls callback at 3, clears flags (was frame_StepSyncCounter)
+0x0601eafc func game_SetDoneFlag hand tiny function that sets a global flag to 1
+0x0601eb18 func irq_InstallSceneCallback hand ; sets flag, installs callback pointer and calls two setup functions when idle (was game_StartTransition)
+0x0601eb90 func frame_ToggleHalfRate hand toggles a parity flag each call; runs one callback on even frames, another every frame
+0x0601ebd0 func frame_ToggleHalfRate_2 hand same parity toggle as sibling; callback on even frames, second callback every frame
+0x0601ec10 func frame_ToggleHalfRate_3 hand same parity toggle pattern; callback on even frames, second callback always
+0x0601ec50 func stub_0601ec50 hand empty function that only returns
+0x0601ec5c func irq_Vdp1DrawEnd hand ; calls helper with constants then sets a global request flag to 1 (was game_RequestStateChange)
+0x0601ec90 func vdp2_StoreRotParamEntry hand ; copies nine camera words into indexed table, stores averaged value into two shorts (was game_StoreCameraHistoryEntry)
+0x0601ed30 func ui_StepScrollOffset hand ; steps scroll value by 0x20 with clamping depending on direction flag, sets short flag
+0x0601edf4 func stub_0601edf4 hand empty function that only returns
+0x0601ee00 func irq_SetupVectors hand registers handlers for vectors 0x40 and 0x41 between two mask-change calls
+0x0601ee48 func irq_SetupVectors_2 hand registers handlers for vectors 0x40 and 0x41 between two mask-change calls
+0x0601ee90 func irq_SetupVectors_3 hand registers handlers for vectors 0x40 and 0x41 between two mask-change calls
+0x0601eed8 func irq_SetupVectors_4 hand registers vectors 0x40, 0x41, 0x4d and 0x43 with handler chosen by a mode flag
+0x0601ef6c func game_SetSyncMode2 hand calls mode setter with constant 2
+0x0601ef84 func game_SetSyncMode3 hand calls mode setter with 3 and two arguments, then follow-up with global
+0x0601efb4 func game_SetSyncMode4 hand calls mode setter with constant 4
+0x0601efcc func game_SetSyncMode5 hand calls helper with 0 then mode setter with constant 5
+0x0601eff0 func game_SetSyncMode6 hand calls mode setter with 6 then follow-up with global value
+0x0601f01c func sound_PlayCourseMusic hand ; picks track number from course table and difficulty bits, calls sound start with 0xf
+0x0601f098 func fx_FadeLoop hand ; loop stepping brightness value down by 8 with frame sync each iteration
+0x0601f0f4 func vdp2_SetFadeWipeWindow hand ; sets window y range and flag bit by player index, split-screen layout (was vdp2_SetSplitScreenWindow)
+0x0601f168 func frame_RunTwoCallbacks hand calls two indirect functions in sequence
+0x0601f188 func util_CallDropThirdArg hand forwards first, second and fourth arguments to another function
+0x0601f1a0 func gfs_LoadSblLibraryOverlay hand ; calls send routine with buffer and size, then follow-up (was scsp_SendCommandBuffer)
+0x0601f1cc func cd_RetryUntilDone hand repeats a wait call and a three-argument operation until it returns zero
+0x0601f20c func smpc_SendCommand hand ; waits on busy flag, writes command and parameter bytes, short delay loop, repeats
+0x0601f2c0 func slave_WaitCommandLoop hand slave SH-2 endless loop waiting on flag bit 0x80 then running command callback
+0x0601f31c func replay_RecordPad1 hand records or plays back pad word per frame into replay buffer, masks buttons, ends on -1
+0x0601f3f0 func replay_RecordPads2 hand two-pad version: stores or replays both pad words per frame with mask and end marker
+0x0601f4dc func replay_RecordPadAndUpdateCars hand ; records pad word into buffer or plays it back, returns value to callback (was replay_RecordPad1Alt)
+0x0601f5c0 func race_UpdateCarsAndCollisions hand ; runs pairwise collision tests over four player objects, then per-object updates (was col_TestPlayerPairs)
+0x0601f7c0 func race_UpdateTwoCarsAndCollisions hand ; decrements timer, runs collision test on pair of objects then three update calls (was col_TestTwoPlayers)
+0x0601f840 func scene_AdvanceRotation hand ; adds 0x28 to masked angle field, copies it to globals, calls helpers
+0x0601f8a4 func render_DrawCameraOnlyFrame hand ; computes camera position products from shifted values, copies via helper, builds matrix (was render_SetupFrameCamera)
+0x0601fa40 func render_InitViewMatricesSynced hand ; calls one function, a second, then the first again (was render_DrawSceneWrapper)
+0x0601fa68 func render_DrawStaticFrameCmds hand ; copies tile data to VRAM, course id 0x66 chooses source and extra copy (was render_CopyBackdropTiles)
+0x0601fb30 func render_DrawRaceFrame hand ; big per-frame render: matrices, camera trail, effects, VDP copies, finish
+0x0601ff3c func render_DrawRaceFrameLite hand ; smaller per-frame render with camera trail table update and view matrix setup
+0x060202e8 func render_DrawSplitScreenFrame hand ; two-player frame render: view matrices, camera products, per-player effect calls, VDP copies
+0x06020670 func render_DrawFiveRacerFrame hand ; renders five objects with matrix setup, sets field 0x66 to 0x14 each, VDP copies (was render_DrawCharacterSelectFrame)
+0x060208e4 func render_DrawTwoPlayerRaceFrame hand ; builds two viewport matrices from camera values, trail table update, VDP copies (was render_DrawSplitScreenFrame_2)
+0x06020ce4 func render_DrawTwoRacerFrame hand ; camera trail update, two-object draw, limits field 0x5e to 3 above threshold (was render_DrawFrameTail)
+0x06020f1c func vdp1_InitCourseViewport hand ; switch on course sets screen parameters, then fills 0x60-byte matrix block and copies it
+0x06021124 func cam_SetupViewMatrix hand ; writes identity-like 3x3 matrices with fixed one value, then calls two helpers (was math_InitIdentityMatrices)
+0x0602119c func cam_BuildViewRotation hand ; sine/cosine products of angle table entries via fixed multiply, builds rotation matrix and writes it
+0x06021308 func cam_BuildViewRotationXY hand ; two-angle sine/cosine table lookup builds partial rotation matrix, stores four entries
+0x060213b0 func game_InitRaceGlobals hand ; sets over a hundred race state variables and defaults, clears 8-entry table
+0x06021924 func game_InitBootGlobals hand ; initializes small state variables and several coordinate globals to default constants (was game_InitMenuGlobals)
+0x06021a4c func save_InitSlotDefaults hand ; fills 24-word table at pointer with default constants (was game_InitDefaultTable)
+0x06021b48 func course_LoadEnvironment hand loads per-course BEACH/CITY/FACTR/CAVES/CHAOS and _ENV files by course number, resets state
+0x06021ca4 func screen_FadeOutAndWait hand ; calls two helpers, sets flag, spins until another flag clears, resets state variables (was frame_WaitIdleAndReset)
+0x06021cfc func game_InitFivePlayerObjects hand ; loads five object positions from table shifted by 12, initial angles, sets ids one to five
+0x06021ef4 func race_InitRaceScene hand ; clears VDP2 tile maps, loads graphics blocks by lap, resets tables, sets camera, loads VERSION.BIN
+0x06022760 func race_InitSceneWithTilemap hand ; fills VDP2 tile map 12x10 grid, writes byte table, sets cameras, loads VERSION.BIN (was menu_InitTilemapScene)
+0x06022998 func menu_InitCharacterPreviewScene hand ; loads MSONIC_HID, MILES_HID, MKNUCK_HID or MROBOT_HID with course file, sets up preview camera
+0x06022e50 func sound_LoadDriverAndLevel1Sfx hand loads SDDRVS_TSK sound driver and BEACH LEV1_SFX effects file, sets loaded flag
+0x06022f44 func sound_LoadCourseSfx hand loads course sound effects LEV1-5_SFX or REPLAY1-6_SFX by index if not already loaded
+0x06023058 func vdp_ResetRegsAndCopy hand clears hw register, waits on status bits, then copies a word table to a hardware buffer
+0x060230f0 func course_LoadLowDetailData hand loads per-course BEACHLO/CITYLO/FACTRLO/CAVESLO/CHAOSLO_BIN by course id, then copies and finishes
+0x060231e4 func race_InitGraphicsState hand clears work RAM, loads GENGFX.BIN, resets sprite/object tables and builds VDP2 map entries
+0x060238a0 func course_LoadResortIsland hand loads BEACHVRM_BIN, BEACHHI_BIN, patches palette and picks TRACK1_BIN or TRACK1H_BIN
+0x06023a94 func course_LoadRadicalCity hand loads CITYVRM_BIN, CITYHI_BIN, patches palette and picks TRACK2_BIN or TRACK2H_BIN
+0x06023c30 func course_LoadReactiveFactory hand loads FACTRVRM_BIN, FACTRHI_BIN, patches palette and picks TRACK3_BIN or TRACK3H_BIN
+0x06023dcc func course_LoadCaves hand loads CAVESVRM_BIN, CAVESHI_BIN, patches palette and picks TRACK4_BIN or TRACK4H_BIN
+0x06023f68 func course_LoadChaos hand loads CHAOSVRM_BIN, CHAOSHI_BIN, patches palette, picks TRACK5_BIN or TRACK5H_BIN, sets globals
+0x06024120 func vdp2_BuildTilemapFromBlocks hand expands 16x16 tile blocks into map entries with a per-tile lookup table, DMA copies each row
+0x060242a8 func vdp2_BuildMirroredMapTables hand builds four 32x32 map tables with increasing cell numbers and XOR-flipped mirror copies, then copies out
+0x060244a4 func vdp2_BuildLinearMapTable hand fills a 32x32 map table with cell numbers in 8-tile groups and copies it to two destinations
+0x0602456c func race_ResetState hand waits on a flag, resets race counters/modes and selects the per-mode handler pointer by game mode
+0x06024790 func race_LoadAndStart hand per-course init dispatch, loads PLAYERS_BIN and VERSION_BIN, sets up players and starts the race scene
+0x06024a44 func course_InitChaosEffects hand fills an effect/animation pointer table with offsets from a base address (was course_InitEffectPointers)
+0x06024b20 func course_AnimateWaves hand advances sine-table indices for wave/water offsets with wraparound and updates scroll values
+0x06024d84 func course_AnimateWobble hand shifts a small sine-driven wobble table and writes two offset words
+0x06024e5c func course_InitCavesEffects hand fills an effect/animation pointer table with offsets from a base address (was course_InitEffectPointers_2)
+0x06024f40 func course_AnimatePaletteFade hand cycles five colour-RAM entries by blending two palettes with a 0..32 counter and runs timed sound cues
+0x060251fc func particle_UpdateCavesEmitter hand writes a particle record from a source object using sine lookup and fixed offsets (was particle_SpawnSpark)
+0x060252c0 func course_InitFactoryEffects hand fills a larger effect/animation pointer table with offsets from a base address (was course_InitEffectPointers_3)
+0x06025468 func course_UpdateEffects hand per-frame update of pickup/effect slots (0x2e entries), nearest-slot search, spawns sprites and plays sound 0x25
+0x06025c1c func effect_ResolveFreeSlot hand finds a slot marked -1 in a 0x2e-entry table and tests a colour-map cell to mark it 0 or 0xfffe
+0x06025d3c func particle_UpdateFactoryEmitter hand writes a particle record from a source object using sine lookup and fixed offsets (was particle_SpawnSpark_2)
+0x06025df8 func course_InitFountainPointers hand fills an effect/animation pointer table with offsets from a base address (was course_InitEffectPointers_4)
+0x06025f60 func particle_UpdateFountain hand spawns particles with 64-bit fixed-point multiplies for two emitter types and sets lifetime 0x19
+0x060263b4 func particle_SpawnSpark_3 hand writes a particle record from a source object using sine lookup and fixed offsets
+0x06026478 func course_InitEffectPointers_5 hand fills an effect pointer table then initialises 0x34-byte particle records from a data stream
+0x06026674 func course_AnimatePaletteScroll hand scrolls palette/colour data with wrapping index and copies it to colour RAM depending on mode
+0x06026798 func particle_SpawnSpark_4 hand writes a particle record using sine lookup and advances a wrapping animation counter
+0x0602687c func particle_SpawnBurst hand spawns 0x34-byte particles around position param_1 with random offsets from a byte stream, wraps index at 0x3c
+0x06026a84 func item_ResetCollectedFlags hand sets -1 flags in the item table for ids from per-course lists terminated by 0xffffffff
+0x06026c7c func stub_06026c7c hand tiny function that stores zero to a global flag
+0x06026ca8 func scroll_UpdateOffsets hand adds velocities to six scroll offset values with masking
+0x06026cf8 func sfx_UpdateTimedCues hand triggers sounds 0x21/0x24 at counter start and writes timed sound parameters while a counter runs
+0x06026dc0 func item_ProcessPickup hand matches a picked item type 5, marks it collected, counts to five and plays sound 0x23
+0x06027184 func sound_PlayChannelSet hand plays one to three sound entries on channel param_1 depending on a mode flag
+0x060271f0 func vdp2_CopyScrollTables hand copies scroll table rows derived from masked scroll positions, optionally a second table, and advances a counter
+0x060272d0 func sprite_FillEntryTable hand fills 12-byte sprite/table entries with incrementing indices, optionally for a second set
+0x060273fc func obj_CheckProximityTriggers hand walks a -1 terminated list, computes distance and angle (atan) to the object and calls a trigger when near
+0x060274c0 func course_DispatchInitA hand calls the per-course (1-5) init function then a common one
+0x06027538 func course_DispatchInitB hand calls the per-course (1-5) function; otherwise copies two sets of values between work buffers
+0x06027630 func course_DispatchUpdate hand calls per-course (1-5) update functions, plus a special one when mode is 0x66
+0x060276c4 func call_WrapBracket hand calls a function, then a second with two arguments, then the first again
+0x060276fc func hud_DrawStatusPanel hand writes HUD sprite vertex words and positions for race mode 2 and player-count variants
+0x06027c14 func hud_DrawTwoPlayerPanel hand writes HUD sprite vertex words for variants chosen by mode and player count (was hud_DrawStatusPanel_2)
+0x06027eec func hud_DrawTimes hand formats and prints lap and race times from a player object's timer fields, tracks best lap
+0x060283b4 func hud_ClearPanelArea hand clears a HUD tile area to a fill value or block-copies a blank pattern depending on mode
+0x06028444 func menu_HandlePauseInput hand edge-detects pad button bits and moves menu cursor values, playing sound 1 on change (was menu_HandlePadInput)
+0x0602865c func vdp2_FillTileRect hand fills a rectangle of tilemap entries with consecutive cell numbers, (width/8 by height/8)
+0x060286b0 func vdp2_SetRacerPaletteEntries hand copies data, clears a block and writes five palette entries from a table (was vdp2_ClearAndSetPalette)
+0x06028744 func hud_DrawMinimapDots hand updates palette pulse, positional indicators for mode 4 and writes a 0x6d-entry byte patch table (was hud_UpdateRaceIndicators)
+0x060289c0 func racer_CheckContactRingScatter hand on contact with another racer spawns scattered rings and subtracts 10 from a counter; does not steer (was ai_AvoidNearbyRacers)
+0x06028da8 func item_UpdateHomingProjectiles hand guess fx_UpdateCollectFlyToRacer, a fly-to-racer sparkle spring, not a missile (study_ai_camera.md); per-camera spring easing of x/y/z towards target with damping, counters decrement (was camera_SmoothFollow)
+0x060290cc func render_TransformRacersAndTrack hand applies a chain of matrix/vector helper calls to param_1 with per-player pieces (was render_ChainTransforms)
+0x06029358 func race_UpdateProgressAndPlaces hand finds nearest path node for a racer, computes progress along 0xc-byte nodes and lap-wrap corrections (was ai_UpdatePathProgress)
+0x060295bc func race_UpdateBestLapTime hand masks three progress counters at +0x50/+0x54/+0x58 and updates best checkpoint by lap state (was race_ClampCheckpointCounters)
+0x060296a0 func race_UpdateLapCrossing hand classifies position into a 3-bit sector code from three point tests, handles lap-state transitions at 6/7 (was car_UpdateTrackSector)
+0x06029874 func car_LookupGroundMapValue hand scales world x/z, builds a bit-interleaved index and reads a colour value from a lookup table (was render_LookupGroundTint)
+0x0602994c func car_UpdateGroundContact hand sets grounded flag at +0x40 from state/velocity and surface type, adjusts state at +0x2c.. fields
+0x06029b1c func vdp_CopyScrollBuffers hand copies buffers with a wrapping counter, with mode-dependent extra copy based on player values
+0x06029c58 func player_ApplyHitEffects hand on state 0x5a picks an animation index from a table and applies per-case adjustments to +0x18 etc.
+0x06029ebc func player_DrawHitIndicator hand for the main player updates camera lag value with +/-6 steps and halving, sets timer 0x58 (was camera_UpdateFollowLag)
+0x06029ff8 func hud_BumpCounters hand increments five counters by 2 if each is below 3 when no pause flags are set
+0x0602a098 func game_FrameTick hand advances small wrapping frame counters, a pointer ring, calls per-frame helpers and decrements timers
+0x0602a170 func sfx_PlayAlternating hand if mode not 2, alternates sound 0x1d between two ids, then calls sound play with four args
+0x0602a1b8 func music_PlayTrackSequence hand starts a chain of five sound/music parts from a track table depending on mode, then calls finish
+0x0602a2b0 func sfx_PlayPositional hand computes distance of an object, picks sound id and volume by object type switch and plays it if in range
+0x0602a4d8 func car_UpdateEffectsAndSparks hand large function spawning 0x34-byte effect particles around the object by state and returns flags
+0x0602af48 func stub_0602af48 hand tiny stub that only returns
+0x0602af54 func sys_WaitForFlag hand clears a short flag and spins until it is set (vblank-style wait), then clears it
+0x0602af7c func screen_FadeStepsUp hand loop adjusting three brightness/colour offset registers by param_1 each frame until positive
+0x0602afe4 func screen_FadeStepsDown hand loop lowering three colour offset registers each frame with clamp then calling update helpers
+0x0602b080 func screen_FadeStepsDownSimple hand loop lowering three colour offset registers by param_1 each frame until a limit
+0x0602b0e8 func screen_FadeStateStep hand steps a fade state machine (states 1 and 2) writing the same offset to three colour registers
+0x0602b1d0 func sound_LoadPlayerSamples hand loops over five voices, setting buffer addresses and copying sample data into sound RAM
+0x0602b278 func sound_UpdateEnginePitchSamples hand recomputes per-car sound buffers when value changes and copies via helpers, for single or split-screen
+0x0602b4ac func obj_LoadRacerModel hand maps type id 0-9 at +offset to a data constant, overridden when mode is 3 (was obj_SelectModelByType)
+0x0602b69c func model_LoadPackedData hand copies packed model sections to destinations and relocates pointers by base offset
+0x0602ba1c func call_TwoStepA hand calls one function with a constant and param_1, then another with the constant and params 2 and 3
+0x0602ba5c func call_TwoStepB hand calls one function with a global and param_1, then another with that global and params 2 and 3
+0x0602ba9c func list_PushTriple hand appends three words to a list and advances the index by 3
+0x0602bac8 func list_FlushToRegisters hand terminates a triple list with zero, then writes each triple to hardware registers waiting on a busy bit 0x10
+0x0602bb40 func hw_WriteTripleAndWait hand writes three words plus fixed values (counts, 7) to a register block then waits on a busy bit 0x10
+0x0602bbc8 func call_FiveTimes hand calls one function five times with five different pointer arguments
+0x0602bc10 func car_SelectAnimationAndCopyFrame hand draws status bars/meters for states 5 and 7 and others, sizes from object fields clamped 0..max (was hud_DrawGaugeBars)
+0x0602c4c0 func title_LoadScreen hand loads TITLES_BIN, sets up VDP2 plane regs, builds 22x14 tilemap and copies it
+0x0602c6dc func ending_LoadScreen hand loads ENDING_BIN and CREDITS_BIN, sets VDP2 regs, builds 22x14 tilemap and checks a code
+0x0602ca10 func option_LoadScreen hand loads OPTION2_BIN, sets VDP2 regs, builds 22x14 tilemap and branches on mode
+0x0602cc8c func demo_LoadAttractRecording hand after the title screen times out, loads PATH1-4_BIN (pad recordings, one 16-bit pad word per frame) into the replay buffer 0x002e8000 and sets course, mode and racer order for the attract demo (was ai_LoadPathFile)
+0x0602cddc func obj_InitRacerState hand zeroes and initialises a racer object's fields, copies position to previous position
+0x0602cf7c func car_ComputeWallSlideVelocity hand converts velocity to vector magnitude scaled by param_2, normalises and applies to the object's speed fields (was car_ApplyVelocityStep)
+0x0602d16c func car_HandleSurfaceFlags hand reads surface flags from the track table and sets state 0x26/0x27/0x28 or applies boost/slide to velocity
+0x0602d2a0 func car_UpdatePhysics hand main per-frame racer update: loads handling params from a 0x28-byte table, saves previous position and applies input flags
+0x0602df7c func car_UpdateBodyTilt hand computes pitch and yaw target angles from sin/cos tables, sqrt and atan2 helpers, stepping angles by 0x20
+0x0602e32c func car_CollideCars hand car-to-car push apart and bounce, velocities damped by 14/16, uses distance checks between two cars
+0x0602e5d8 func car_UpdateVelocityGround hand steps heading by 0x14 toward target, rotates velocity vector by heading and applies friction on ground
+0x0602e778 func car_UpdateVelocityTrackHeading hand steps heading by 0x30 toward the track section angle, rotates velocity using sin/cos tables
+0x0602e9c8 func path_SetSegmentVelocity hand sets object velocity toward next path segment record from segment table, per-axis speed values
+0x0602ea40 func path_InterpolatePosition hand interpolates position along 0x22-byte path segment records using fractional parameter and fixed-point multiplies
+0x0602ec38 func path_ProjectOntoSegment hand projects an object position onto a path segment line, returns parameter along segment
+0x0602ed64 func car_AlignToTrackSegment hand aligns car heading and height to the current track segment, updates angles from segment data
+0x0602f0f0 func track_FindSectionContainingPoint hand binary search over 0x16-byte track sections, point-in-quad test returns section index
+0x0602f38c func obj_ClampMoveStep hand clamps per-frame movement delta of an object to a maximum step size
+0x0602f480 func obj_ResetVerticalVelocity hand clears vertical velocity and related fall state fields of an object
+0x0602f4a8 func track_GetSurfaceHeightAtPoint hand computes ground height at x,z from track section plane data via interpolation
+0x0602f730 func math_ProjectPointOnSegment hand fixed-point projection of a point onto a 2D line segment, returns clamped parameter
+0x0602f7b4 func car_InitGroundContact hand initialises car ground contact state, finds track section and saved height under the car
+0x0602fa1c func car_UpdateVerticalBounce hand applies gravity and vertical bounce when car lands, uses on-ground flag at +0x72
+0x0602fcb0 func car_SnapToTrackSection hand snaps car position and height to given track section, resets contact fields
+0x0602fd84 func car_UpdateGroundCollision hand tests car against ground height each frame, handles landing, slopes and airborne transitions
+0x060300ec func car_CheckGroundContact hand decides whether the car is touching ground using surface height and vertical velocity
+0x06030334 func track_GetLowestGroundHeightAt hand scans overlapping sections and returns lowest ground height at a point
+0x06030480 func car_ReflectOffWall hand reflects car velocity off a wall normal with damping, uses 0x10-byte wall records
+0x06030658 func wall_TestMoveBlocked hand tests whether a movement step crosses a wall record, returns blocked flag
+0x060308e0 func car_ResolveWallCollision hand loops over nearby wall records, pushes car out and reflects velocity on hit
+0x06030c98 func track_SetupDataPointers hand sets up pointers to track section, wall and collision tables from loaded course data
+0x06030db0 func car_SaveGroundHeight hand stores current ground height into saved height field at +0x38 of car
+0x06030dbc func car_UpdateCollisions hand per-car collision driver, calls ground, wall and car-to-car collision routines in order
+0x06030e90 func track_SwapTriggerEntry hand swaps or toggles a trigger table entry record for course events
+0x06030f10 func track_CheckTriggerProximity hand tests car distance against trigger entries and fires event when close
+0x06031048 func snd_FindFreeSlot hand scans 50 ten-byte effect slots for a free entry, returns index
+0x060310c4 func snd_LoadDriverImage hand copies sound driver image into sound RAM and starts the 68000 via mailbox
+0x060311fc func snd_FindBankEntryAndCopy hand looks up sound bank entry and copies its data to sound RAM
+0x060312a8 func snd_SendCommand4Bytes hand writes four command bytes to the 68000 sound mailbox and waits for acknowledge
+0x06031314 func snd_InitDriver hand initialises sound driver state, effect slots, channel table and default volumes via mailbox commands
+0x060315d4 func snd_QueueEffect hand queues a sound effect into a free slot with volume and pan then sends command
+0x060316c4 func snd_AllocChannel hand allocates one of 16 five-byte channel entries for a sound request
+0x060317e0 func snd_UpdateChannels hand per-frame update of channel entries and effect slots, sends changes to the 68000
+0x0603213c func snd_SetDefaultVolumes hand sets default volume levels for sound channels via mailbox
+0x0603216c func snd_UpdateChannelsTwice hand calls the same function pointer twice in sequence (was util_CallTwice)
+0x0603218c func tbl_SetPointer hand stores a pointer into a global table slot
+0x060321a0 func tbl_GetPointer hand returns a pointer from a global table slot
+0x060321b4 func pad_GetButtonsInverted hand returns active-low pad byte at +2 and +3 inverted into pressed-button mask
+0x060321d4 func pad_GetButtonsInverted_2 hand returns inverted pad button bytes for another pad slot
+0x060321f4 func pad_LowNibbleOfByte2Shl8 hand extracts device id nibble from pad data byte (was pad_GetDeviceIdNibble)
+0x06032204 func pad_GetButtonsInverted_3 hand returns inverted pad button bytes variant for third pad access path
+0x06032224 func pad_GetButtonsHigh hand returns upper pad button byte of pad data
+0x06032238 func pad_GetButtonsInverted_4 hand returns inverted pad button bytes variant for fourth pad access path
+0x06032258 func pad_LowNibbleOfByte2Shl8Dup hand extracts device id nibble variant from pad data (was pad_GetDeviceIdNibble_2)
+0x06032268 func stub_06032268 hand tiny stub that returns zero
+0x06032274 func pad_DispatchRead hand dispatches pad read to the handler for the connected device type
+0x060322b4 func pad_XorState hand xors current and previous pad state to find changed buttons
+0x060322c0 func pad_GetNewPressed hand returns buttons newly pressed this frame from current and previous states
+0x060322e8 func pad_GetNewReleased hand returns buttons newly released this frame from current and previous states
+0x06032314 func pad_GetAnalogAxes hand reads analog stick axis bytes from pad data and recentres them
+0x06032370 func pad_GetPort1Data hand returns pointer or data for controller port 1
+0x0603239c func pad_GetPort2Data hand returns pointer or data for controller port 2
+0x060323c8 func pad_FillPeripheralInfo hand fills peripheral info structure from SMPC INTBACK data for a port
+0x06032458 func pad_GetDeviceByIndex hand returns peripheral record for a given device index
+0x06032494 func pad_GetNthConnectedDevice hand counts connected peripherals and returns the Nth connected device
+0x060324f8 func math_BuildRotationMatrix hand builds 3x3 rotation matrix from three angles using sin/cos tables and fixed multiplies
+0x06032c80 func math_InitViewMatrices hand sets up view and projection matrices for camera with default scale
+0x06032cec func math_InitViewMatricesScaled hand sets up view matrices like InitViewMatrices with a scale factor applied
+0x06032d90 func car_InitFromCharacterStats hand copies character stat table values into car struct speed and handling fields
+0x06032f08 func car_InitRacerSlots hand initialises racer slot array, one car struct per racer, positions and character ids
+0x06033228 func race_SetupCourse hand loads AISTUFFn.BIN per course, strings BEACH FACTR CAVES CHAOS select course data
+0x06033480 func ai_UpdateRacerBehaviour hand large CPU racer state machine, switch on action code, random table, nearby racer checks
+0x06034384 func ai_AdvanceSegmentQueue hand advances the 16-entry AI path segment queue, merges runs, picks next section branch
+0x060348a8 func ai_PopSegmentQueue hand pops previous entry of AI path segment queue, moves section and offset back
+0x060349a4 func car_BounceCarsApart hand damps velocities by 14/16 and transfers momentum between two colliding cars using distance
+0x06034b40 func car_CollideCarsSwept hand swept sphere test between two cars in 16 substeps, triggers bump effect and sound 0x2a
+0x06034e70 func car_UpdateJumpTrigger hand applies jump or spring pad trigger flags to car velocity at +0x2c +0x30 +0x34
+0x06034f5c func car_UpdateMovement hand main per-frame car movement: gravity, speed limits, steering angle step, accelerate or brake, apply velocity
+0x06035840 func car_ApplyRubberBandStats hand scales car acceleration, top speed and handling tables from current value via character table (was car_UpdateSpeedScale)
+0x06035974 func ai_UpdateRubberBand hand adjusts CPU speed from position difference to player, plus ghost object replay step
+0x06035c34 func ai_SelectSpeedCap hand selects CPU speed cap value by difficulty and level switch, clamped to 0x20 minimum
+0x06035ddc func smpc_CallWithResetDisabled hand sets SMPC command 0x1a RESDISA, calls a function, then 0x19 RESENAB with SF busy-wait
+0x06035e64 func save_CopyBufferSelect hand copies a block from one of two buffers chosen by argument into work buffer
+0x06035e9c func save_CheckBackupDevices hand probes two backup devices and records which one is usable
+0x06035f94 func save_OpenBackupFile hand builds SONICR___01 and SAVE_DATA names and opens backup RAM file, returns status code
+0x060360a0 func save_WriteFileResetSafe hand writes save data through backup vtable while SMPC reset is disabled
+0x0603614c func save_ReadHeader hand queries device status and copies header bytes into buffer when successful
+0x06036194 func save_StoreSlotBlock hand copies 0x70-byte save slot block into slot buffer for current slot number
+0x06036208 func save_StoreSlotAndWrite hand copies slot block by index computed from slot id then calls write helpers
+0x06036268 func save_InitDevices hand clears save buffer, checks both backup devices, reports errors via callback
+0x0603635c func math_ShiftLeftVar hand variable left shift implemented as case ladder, libgcc style ashiftlt
+0x060363fe func stub_060363fe hand tiny stub that only returns
+0x0603641a func stub_0603641a hand tiny stub that only returns
+0x0603641c func stub_0603641c hand tiny stub that only returns
+0x06036420 func stub_06036420 hand tiny stub that only returns
+0x06036422 func stub_06036422 hand tiny stub that only returns
+0x06036424 func stub_06036424 hand tiny stub that only returns
+0x06036426 func stub_06036426 hand tiny stub that only returns
+0x06036428 func stub_06036428 hand tiny stub that only returns
+0x0603642a func stub_0603642a hand tiny stub that only returns
+0x0603642c func stub_0603642c hand tiny stub that only returns
+0x060364a0 func mem_Copy64ByteBlocks hand memcpy loop copying 16 longs per iteration until count exhausted
+0x060364ec func divsi3 hand libgcc signed 32-bit division unrolled with div1 steps, returns zero for zero divisor
+0x0603658c func math_ShiftRightArithVar hand variable arithmetic right shift case ladder, libgcc style ashiftrt
+0x06036610 func sys_GetWord hand returns a global word value
+0x06036620 func sys_GetHalfword hand returns a global halfword read through a pointer
+0x06036664 func sys_SetHalfword hand writes a halfword to a global register address
+0x06036674 func sys_ApplyDefaultMask hand calls a setter with a default mask constant and stores it in a global
+0x0603669c func sys_OrFlags hand ORs the argument bits into a global halfword
+0x060366b0 func sys_GetHalfword_2 hand returns a second global halfword read through a pointer
+0x060366c4 func sys_SetHalfword_2 hand writes a halfword to a second global register address
+0x060366d4 func sys_GetWord_2 hand returns a second global word value
+0x060366e4 func cd_ReadDataWords hand reads N halfwords from CD data transfer register into buffer, checks transferred count, error -7
+0x06036740 func cd_CallHandler hand wrapper that calls a CD block handler function pointer with no arguments
+0x06036780 func cd_WaitHirqAndCommand hand ORs HIRQ flags, checks mask, sends command, reads CR response, errors -1 -2 -5 -6
+0x0603683c func cd_PollHirq hand polls HIRQ register for requested bits with retry limit, returns -3 on timeout
+0x06036870 func cd_WriteCommandRegs hand writes four halfwords to CD block command registers CR1 to CR4
+0x060368ac func cd_ReadResponseRegs hand reads four halfwords from CD block response registers CR1 to CR4
+0x06036938 func cd_CallHandler_2 hand wrapper that calls a CD helper function pointer with no arguments
+0x06036950 func cd_GetStatusChecked hand reads CD status, converts it and returns error -8 if status invalid or not ready
+0x060369a0 func cd_ReadStableStatus hand reads CD response twice until equal, up to 100 tries, else -3
+0x06036a24 func cd_GetHardwareInfo hand sends CD command 0x01 and copies five response bytes to output
+0x06036a8c func cd_GetToc hand sends CD command 0x02 and passes masked response size to a helper
+0x06036ad8 func cd_GetSessionInfo hand sends CD command 0x03 with session number and returns response CR4 value
+0x06036b14 func cd_InitializeSystem hand sends CD command 0x04 with flags, optional speed setup when flag bits match, returns status
+0x06036b98 func cd_OpenTray hand sends CD command 0x05 via command helper
+0x06036bc0 func cd_WaitCommandDone hand waits for CD command completion flags, returns error -4 on tray open, clears HIRQ
+0x06036c28 func cd_EndDataTransfer hand sends CD command 0x06 end data transfer, returns masked word count, then clears HIRQ
+0x06036c78 func cd_CallHandler_3 hand wrapper that calls a CD helper function pointer with no arguments
+0x06036c90 func cd_SendCommandSimple hand calls command helper with local response buffer and flag 1
+0x06036cb0 func cd_SendCommandCopyResponse hand executes CD command then copies a response byte or block to destination
+0x06036d20 func cd_ReadStatusWords hand copies three words from CD response area and returns status register bits
+0x06036d60 func cd_PackResponse hand repacks CD response bytes into structure, masks last word
+0x06036da8 func util_DelayLoop hand busy-wait loop counting down the argument
+0x06036dcc func sys_SetIntHandler hand stores handler pointer in table at index and registers it via function pointer
+0x06036df8 func sys_GetIntHandler hand returns handler pointer from table at given index
+0x06037430 func pad_InitIntback hand initialises SMPC peripheral INTBACK state, buffers and vector 0x47 for mode 0 1 or 2
+0x06037648 func pad_ReadIntbackResult hand per-frame INTBACK result swap, retry counting and buffer exchange, returns status
+0x06037850 func pad_ParseIntbackData hand parses SMPC INTBACK OREG peripheral data with per-device state machine, reversed byte order
+0x06037e80 func pad_CheckCountLimit hand sets flag when a counter reaches limit halfword
+0x06037eac func pad_CheckSmpcStatusBit hand sets state to 2 when SR bit 0x20 set and counter above threshold
+0x06037ee0 func pad_CopyOregToBuffer hand copies every other byte from SMPC OREG to buffer until end address
+0x06037f34 func pad_StoreSlotData hand copies per-slot bytes into peripheral buffer with row stride width plus 2
+0x06037f9c func pad_ResetState hand clears all peripheral parsing state variables and sets initial 0xf0 bytes
+0x06038028 func smpc_StartIntback hand writes IREG bytes and starts INTBACK with SF set, returns 0 on start
+0x06038094 func pad_QueueRepeatedCommands hand loops handler calls while remaining count positive and below limit (was pad_PollRepeat)
+0x060380fc func pad_SetBufferByte0 hand stores byte at first position of current buffer row
+0x06038128 func pad_SetBufferByte1 hand stores byte at second position of current buffer row
+0x06038158 func pad_CopyDataRowsTwice hand copies six config words to stack and calls helper twice if first returns nonzero (was pad_ProcessConfigCopy)
+0x060381c0 func pad_CopyDataRows hand copies or fills peripheral data rows of width plus 2 between two buffers

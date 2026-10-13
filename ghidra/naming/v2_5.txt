@@ -1,0 +1,26 @@
+0 0x0602d2a0 car_UpdatePhysics CONFIRM car_UpdatePhysics called per racer with pad input by replay_RecordPad routines; per-frame input/state physics
+0 0x06030e90 track_SwapTriggerEntry CONFIRM track_SwapTriggerEntry swaps flag words between trigger entry and track segment table when proximity fires
+0 0x06030f10 track_CheckTriggerProximity CONFIRM track_CheckTriggerProximity loops trigger entries, squared distance test, calls swap; called from car_UpdateCollisions
+0 0x060311fc snd_FindBankEntryAndCopy CONFIRM snd_FindBankEntryAndCopy scans 8-byte bank table by two ids then memcpy and marks entry; called from snd_InitDriver
+0 0x0603213c snd_SetDefaultVolumes CONFIRM snd_SetDefaultVolumes writes two volume constants into four 0x20-stride slots at +0x16; no callers to refine
+0 0x0603216c util_CallTwice RENAME snd_UpdateChannelsTwice only body is snd_UpdateChannels called twice; callers use it around sync mode switches and waits
+0 0x060321f4 pad_GetDeviceIdNibble UNSURE pad_GetDeviceIdNibble caller pad_CopyDataRows does not visibly use it; body is byte2 low nibble shifted 8
+0 0x06032258 pad_GetDeviceIdNibble_2 UNSURE pad_GetDeviceIdNibble_2 identical body to sibling; no visible use in caller
+0 0x06032d90 car_InitFromCharacterStats CONFIRM car_InitFromCharacterStats zeroes car fields then scales stats from 0x28-byte character table; called per slot in car_InitRacerSlots
+0 0x06033480 ai_UpdateRacerBehaviour CONFIRM ai_UpdateRacerBehaviour big CPU racer state machine called per CPU car in col_TestPlayerPairs
+0 0x06034384 ai_AdvanceSegmentQueue CONFIRM ai_AdvanceSegmentQueue maintains 16-entry path segment queue, called from ai_UpdateRacerBehaviour
+0 0x06034e70 car_UpdateJumpTrigger CONFIRM car_UpdateJumpTrigger applies jump pad flags from track tile to velocity; called from car_UpdateMovement
+0 0x06035840 car_UpdateSpeedScale RENAME car_ApplyRubberBandStats re-derives speed/accel stats from rubber-band scale DAT_0603bfa0 when it changes; callers are ai_UpdateRubberBand and racer AI
+0 0x06035974 ai_UpdateRubberBand CONFIRM ai_UpdateRubberBand adjusts CPU speed scale from position gap to player; called once per frame in col_TestPlayerPairs
+0 0x06035c34 ai_SelectSpeedCap CONFIRM ai_SelectSpeedCap picks base CPU speed cap by difficulty/level; result stored by race_SetupCourse
+0 0x06035e9c save_CheckBackupDevices CONFIRM save_CheckBackupDevices opens both backup devices and records which is usable
+0 0x060360a0 save_WriteFileResetSafe CONFIRM save_WriteFileResetSafe brackets backup write with SMPC reset disable/enable; called from save store routines
+0 0x0603614c save_ReadHeader CONFIRM save_ReadHeader opens device then copies header bytes to save buffer; called after save write
+0 0x06036b98 cd_OpenTray CONFIRM cd_OpenTray sends CDC command 0x05 which is open tray
+0 0x06036bc0 cd_WaitCommandDone CONFIRM cd_WaitCommandDone polls HIRQ flags returns -4 on tray open; used by cd_ReadDataWords
+0 0x06036d20 cd_ReadStatusWords CONFIRM cd_ReadStatusWords copies three response words from CD buffer; caller is a thin wrapper
+0 0x06037430 pad_InitIntback CONFIRM pad_InitIntback sets SMPC intback state and vector 0x47 by mode; called by pad_GetPort1Data/2Data
+0 0x06037648 pad_ReadIntbackResult CONFIRM pad_ReadIntbackResult swaps intback buffers per frame and restarts intback; used by pad_FillPeripheralInfo
+0 0x06038094 pad_PollRepeat UNSURE pad_PollRepeat loops two buffer-byte setters while count positive; purpose of the bytes unclear
+0 0x06038158 pad_ProcessConfigCopy UNSURE pad_ProcessConfigCopy packs six words and calls pad_CopyDataRows up to twice; role unclear
+0 0x060381c0 pad_CopyDataRows CONFIRM pad_CopyDataRows copies or fills rows of width+2 bytes between two peripheral buffers

@@ -1,0 +1,14 @@
+0 0x060062e0 gfx_TransformPolygonRecord UNSURE x
+0 0x06006be4 fx_UpdateSpriteParticles_2 UNSURE x
+0 0x06007068 fx_UpdateAnimatedObjects_2 UNSURE x
+0 0x0601ec5c game_RequestStateChange UNSURE x
+0 0x0601f1a0 scsp_SendCommandBuffer UNSURE x
+0 0x0601f8a4 render_SetupFrameCamera UNSURE x
+0 0x06020ce4 render_DrawFrameTail UNSURE x
+0 0x06021924 game_InitMenuGlobals UNSURE x
+0 0x06022760 menu_InitTilemapScene UNSURE x
+0 0x06028da8 item_UpdateHomingProjectiles UNSURE x
+0 0x060321f4 pad_GetDeviceIdNibble UNSURE x
+0 0x06032258 pad_GetDeviceIdNibble_2 UNSURE x
+0 0x06038094 pad_PollRepeat UNSURE x
+0 0x06038158 pad_ProcessConfigCopy UNSURE x

@@ -1,0 +1,52 @@
+0x0600658c func gfx_TransformProjectVertex hand provisional: 3x3 matrix multiply of vertex via MAC emulation, reciprocal table lookup for perspective, writes projected vertex backwards
+0x060066b0 func gfx_TransformProjectVertexClip hand provisional: like projection transform but with 0x3b range check on depth index and clip table select
+0x060067c4 func gfx_TransformProjectVertexClip_2 hand provisional: projection transform variant with +0x60 depth bias and table limit check
+0x060069fc func fx_UpdateSpriteParticles hand provisional: loads 4x4 matrix shifted <<8, steps particles with lifetime counter at +0x1e, accumulates velocity/frame animation
+0x06006be4 func fx_UpdateSpriteParticles_2 hand provisional: particle list update variant with matrix setup, lifetime countdown, velocity integration
+0x06006dbc func fx_UpdateAnimatedObjects hand provisional: steps object records, frame counter at +0x20 below 2 branch, matrix transform and projection
+0x06007068 func fx_UpdateAnimatedObjects_2 hand provisional: second variant of animated object update with frame counter check and transform
+0x06007314 func fx_UpdateSpriteParticles_3 hand provisional: particle update variant with lifetime counter at +0x1e and matrix transform
+0x060074a8 func gfx_TransformObjectList hand provisional: walks object list applying transform matrix and projecting vertices
+0x06007688 func gfx_MultiplyAccumulateRows hand provisional: loops over rows doing sign-magnitude 32x32 multiply emulation, fixed-point accumulate
+0x0600773c func gfx_ClearZBufferTable hand clears 0x200 blocks of 16 words (0x2000 bytes) of a buffer, zero-fill backwards
+0x060077ea func gfx_RenderPolyListDivu hand provisional: clears 32 words, back-face test via cross product of vertices at +0x24/+0x28, uses DIVU 0xffffff00
+0x060078b6 func gfx_RasterizeMeshSetup hand copies 3x3 matrix, clears span buffer, rasterizes each triangle via FUN_060079ac and FUN_06007c48
+0x060079ac func gfx_ProjectVertexToScreen hand provisional: projects one vertex with perspective, calls sqrt-like bit loop FUN_06007b3c, 64-bit multiplies
+0x06007b3c func math_IntSqrtBitLoop hand binary-search integer square root over table, 12 iterations of shifted bit tests
+0x06007c48 func gfx_RasterizeTriangleSpans hand sorts three vertices by y (+0x28), steps edge spans, calls FUN_06007ef8 for each scanline
+0x06007ef8 func gfx_DrawTexturedSpan hand fills 16-bit scanline from texture via u/v fixed-point stepping, 256-wide texture, DIVU for span length
+0x06008014 func math_Sqrt16_16 hand 16.16 fixed square root using DIVU Newton iteration, returns 0xffff0000 on negative
+0x06008058 func math_Atan2 hand octant selection by signs and magnitudes, DIVU ratio, jump table of per-octant routines
+0x0600858e func math_MulDiv64 hand 64-bit multiply of two args divided by DIVU divisor, returns quotient
+0x060085a0 func math_DivuSetup64 hand provisional: writes 64-bit dividend and divisor to DIVU registers and returns result
+0x060085f4 func stub_060085f4 hand tiny stub calling function pointer with argument 1
+0x0600867e func fx_UpdateDebrisPieces hand updates 0x2e debris entries: timers, velocity from sin/cos tables, gravity at +0x18/+8, wrap on masks
+0x06008768 func math_BuildReciprocalTable hand fills table backwards with DIVU results 1/n per entry, then pads remainder with constant
+0x0600878e func math_PointOnLineSide hand compares point against segment (x1,y1)-(x2,y2) with DIVU slope, major-axis choice, returns side
+0x060088a6 func stub_060088a6 hand clears two globals then calls function pointer, small wrapper
+0x06008944 func cd_SendCommandChecked hand stores command pointer, same-pointer test sets mode 7 else 1, calls handler, clears on done
+0x060089c8 func cd_SendCommand3 hand stores three args to globals and calls handler function pointer
+0x06008a1c func stub_06008a1c hand calls function pointer and returns its result
+0x06008a28 func vdp1_OrCommandFlagsRange hand ORs flag into word 2 of 0x20-byte VDP1 command entries between two pointers
+0x06008a58 func vdp1_OrCommandFlagsAdjustRange hand ORs flags into VDP1 command entries and shifts vertex words by 0x70 depending on mask
+0x06008adc func stub_06008adc hand writes 0 then 0x11 to a global byte, small state reset
+0x06008ae8 func stub_06008ae8 hand duplicate of 06008adc, writes 0 then 0x11 to a global
+0x06008b0c func sys_WaitInterruptFlag hand spins until global nonzero and status below 0x23 or bit 0x22 set
+0x06008b2a func sys_WaitVBlankAck hand polls flag bit 0x20, clears it, waits for status mask clear, sets bit 0x10, returns 0x10
+0x06008b70 func track_FindSegmentByDistance hand provisional: walks 8-byte segment entries, squared 3D distance from point vs radius squared, returns segment data
+0x06008c04 func memcpy_6 hand byte copy loop of param_3 bytes from src to dst
+0x06008c18 func memset_6 hand fills param_3 bytes with value, going backwards from end
+0x06008c28 func vdp2_WriteTileMapBlock hand writes VDP2 pattern name words for 3 rows of tiles from table index and offset
+0x06008cc4 func vdp2_WriteTileMap3x3 hand writes 3x3 consecutive pattern name entries with row stride
+0x06008d04 func vdp2_WriteTileMap2x2 hand writes 2x2 pattern name entries with row stride from table base
+0x06008d60 func hud_DrawTimerDigits hand uses DIVU by 10 and 6 to split time into digits, writes VDP2 tile entries for race timer
+0x06008e08 func hud_DrawNumberDigits hand writes VDP2 tile pairs for digits using DIVU by 10 and 6, fixed fallback pattern above threshold
+0x06008eec func fx_CollectRingsNear5 hand scans object list for type 0 entries, tests 5 character positions within range, ring pickup check
+0x06009138 func fx_CollectRingsNear2 hand ring/item proximity test against 2 characters, same record scan as 06008eec
+0x0600928c func fx_BreakItemsNearPlayer hand marks items type 0x5a within squared radius of player, spawns 0x20-byte effect entry in ring buffer
+0x060093a0 func gfx_BuildWaterRippleLines hand builds per-line sine offset table from height words, writes line scroll entries for water
+0x060094e4 func gfx_BuildFloorLineZTable hand per-line depth via DIVU, stores 16-bit depth shifted >>9 or max for floor perspective
+0x06009568 func ai_NearestWaypointXZ hand finds nearest of N 12-byte points by squared XZ distance offset by given values, returns index
+0x060095cc func ai_NearestWaypointXYZ hand finds nearest 12-byte waypoint by squared 3D distance, returns index counted from start
+0x06009658 func ai_NearestWaypointXYZ_2 hand duplicate of 060095cc using a different max distance constant and count
+0x0600980c func ai_NearestPointXZShort hand nearest of 16-byte entries by squared distance using 16-bit coords, returns index

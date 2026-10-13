@@ -1,0 +1,142 @@
+0x0602df7c func car_UpdateBodyTilt hand computes pitch and yaw target angles from sin/cos tables, sqrt and atan2 helpers, stepping angles by 0x20
+0x0602e32c func car_CollideCars hand car-to-car push apart and bounce, velocities damped by 14/16, uses distance checks between two cars
+0x0602e5d8 func car_UpdateVelocityGround hand steps heading by 0x14 toward target, rotates velocity vector by heading and applies friction on ground
+0x0602e778 func car_UpdateVelocityTrackHeading hand steps heading by 0x30 toward the track section angle, rotates velocity using sin/cos tables
+0x0602e9c8 func path_SetSegmentVelocity hand sets object velocity toward next path segment record from segment table, per-axis speed values
+0x0602ea40 func path_InterpolatePosition hand interpolates position along 0x22-byte path segment records using fractional parameter and fixed-point multiplies
+0x0602ec38 func path_ProjectOntoSegment hand projects an object position onto a path segment line, returns parameter along segment
+0x0602ed64 func car_AlignToTrackSegment hand aligns car heading and height to the current track segment, updates angles from segment data
+0x0602f0f0 func track_FindSectionContainingPoint hand binary search over 0x16-byte track sections, point-in-quad test returns section index
+0x0602f38c func obj_ClampMoveStep hand clamps per-frame movement delta of an object to a maximum step size
+0x0602f480 func obj_ResetVerticalVelocity hand clears vertical velocity and related fall state fields of an object
+0x0602f4a8 func track_GetSurfaceHeightAtPoint hand computes ground height at x,z from track section plane data via interpolation
+0x0602f730 func math_ProjectPointOnSegment hand fixed-point projection of a point onto a 2D line segment, returns clamped parameter
+0x0602f7b4 func car_InitGroundContact hand initialises car ground contact state, finds track section and saved height under the car
+0x0602fa1c func car_UpdateVerticalBounce hand applies gravity and vertical bounce when car lands, uses on-ground flag at +0x72
+0x0602fcb0 func car_SnapToTrackSection hand snaps car position and height to given track section, resets contact fields
+0x0602fd84 func car_UpdateGroundCollision hand tests car against ground height each frame, handles landing, slopes and airborne transitions
+0x060300ec func car_CheckGroundContact hand decides whether the car is touching ground using surface height and vertical velocity
+0x06030334 func track_GetLowestGroundHeightAt hand scans overlapping sections and returns lowest ground height at a point
+0x06030480 func car_ReflectOffWall hand reflects car velocity off a wall normal with damping, uses 0x10-byte wall records
+0x06030658 func wall_TestMoveBlocked hand tests whether a movement step crosses a wall record, returns blocked flag
+0x060308e0 func car_ResolveWallCollision hand loops over nearby wall records, pushes car out and reflects velocity on hit
+0x06030c98 func track_SetupDataPointers hand sets up pointers to track section, wall and collision tables from loaded course data
+0x06030db0 func car_SaveGroundHeight hand stores current ground height into saved height field at +0x38 of car
+0x06030dbc func car_UpdateCollisions hand per-car collision driver, calls ground, wall and car-to-car collision routines in order
+0x06030e90 func track_SwapTriggerEntry hand provisional swaps or toggles a trigger table entry record for course events
+0x06030f10 func track_CheckTriggerProximity hand provisional tests car distance against trigger entries and fires event when close
+0x06031048 func snd_FindFreeSlot hand scans 50 ten-byte effect slots for a free entry, returns index
+0x060310c4 func snd_LoadDriverImage hand copies sound driver image into sound RAM and starts the 68000 via mailbox
+0x060311fc func snd_FindBankEntryAndCopy hand provisional looks up sound bank entry and copies its data to sound RAM
+0x060312a8 func snd_SendCommand4Bytes hand writes four command bytes to the 68000 sound mailbox and waits for acknowledge
+0x06031314 func snd_InitDriver hand initialises sound driver state, effect slots, channel table and default volumes via mailbox commands
+0x060315d4 func snd_QueueEffect hand queues a sound effect into a free slot with volume and pan then sends command
+0x060316c4 func snd_AllocChannel hand allocates one of 16 five-byte channel entries for a sound request
+0x060317e0 func snd_UpdateChannels hand per-frame update of channel entries and effect slots, sends changes to the 68000
+0x0603213c func snd_SetDefaultVolumes hand provisional sets default volume levels for sound channels via mailbox
+0x0603216c func util_CallTwice hand provisional calls the same function pointer twice in sequence
+0x0603218c func tbl_SetPointer hand stores a pointer into a global table slot
+0x060321a0 func tbl_GetPointer hand returns a pointer from a global table slot
+0x060321b4 func pad_GetButtonsInverted hand returns active-low pad byte at +2 and +3 inverted into pressed-button mask
+0x060321d4 func pad_GetButtonsInverted_2 hand returns inverted pad button bytes for another pad slot
+0x060321f4 func pad_GetDeviceIdNibble hand provisional extracts device id nibble from pad data byte
+0x06032204 func pad_GetButtonsInverted_3 hand returns inverted pad button bytes variant for third pad access path
+0x06032224 func pad_GetButtonsHigh hand returns upper pad button byte of pad data
+0x06032238 func pad_GetButtonsInverted_4 hand returns inverted pad button bytes variant for fourth pad access path
+0x06032258 func pad_GetDeviceIdNibble_2 hand provisional extracts device id nibble variant from pad data
+0x06032268 func stub_06032268 hand tiny stub that returns zero
+0x06032274 func pad_DispatchRead hand dispatches pad read to the handler for the connected device type
+0x060322b4 func pad_XorState hand xors current and previous pad state to find changed buttons
+0x060322c0 func pad_GetNewPressed hand returns buttons newly pressed this frame from current and previous states
+0x060322e8 func pad_GetNewReleased hand returns buttons newly released this frame from current and previous states
+0x06032314 func pad_GetAnalogAxes hand reads analog stick axis bytes from pad data and recentres them
+0x06032370 func pad_GetPort1Data hand returns pointer or data for controller port 1
+0x0603239c func pad_GetPort2Data hand returns pointer or data for controller port 2
+0x060323c8 func pad_FillPeripheralInfo hand fills peripheral info structure from SMPC INTBACK data for a port
+0x06032458 func pad_GetDeviceByIndex hand returns peripheral record for a given device index
+0x06032494 func pad_GetNthConnectedDevice hand counts connected peripherals and returns the Nth connected device
+0x060324f8 func math_BuildRotationMatrix hand builds 3x3 rotation matrix from three angles using sin/cos tables and fixed multiplies
+0x06032c80 func math_InitViewMatrices hand sets up view and projection matrices for camera with default scale
+0x06032cec func math_InitViewMatricesScaled hand sets up view matrices like InitViewMatrices with a scale factor applied
+0x06032d90 func car_InitFromCharacterStats hand provisional copies character stat table values into car struct speed and handling fields
+0x06032f08 func car_InitRacerSlots hand initialises racer slot array, one car struct per racer, positions and character ids
+0x06033228 func race_SetupCourse hand loads AISTUFFn.BIN per course, strings BEACH FACTR CAVES CHAOS select course data
+0x06033480 func ai_UpdateRacerBehaviour hand provisional large CPU racer state machine, switch on action code, random table, nearby racer checks
+0x06034384 func ai_AdvanceSegmentQueue hand provisional advances the 16-entry AI path segment queue, merges runs, picks next section branch
+0x060348a8 func ai_PopSegmentQueue hand pops previous entry of AI path segment queue, moves section and offset back
+0x060349a4 func car_BounceCarsApart hand damps velocities by 14/16 and transfers momentum between two colliding cars using distance
+0x06034b40 func car_CollideCarsSwept hand swept sphere test between two cars in 16 substeps, triggers bump effect and sound 0x2a
+0x06034e70 func car_UpdateJumpTrigger hand provisional applies jump or spring pad trigger flags to car velocity at +0x2c +0x30 +0x34
+0x06034f5c func car_UpdateMovement hand main per-frame car movement: gravity, speed limits, steering angle step, accelerate or brake, apply velocity
+0x06035840 func car_UpdateSpeedScale hand provisional scales car acceleration, top speed and handling tables from current value via character table
+0x06035974 func ai_UpdateRubberBand hand provisional adjusts CPU speed from position difference to player, plus ghost object replay step
+0x06035c34 func ai_SelectSpeedCap hand provisional selects CPU speed cap value by difficulty and level switch, clamped to 0x20 minimum
+0x06035ddc func smpc_CallWithResetDisabled hand sets SMPC command 0x1a RESDISA, calls a function, then 0x19 RESENAB with SF busy-wait
+0x06035e64 func save_CopyBufferSelect hand copies a block from one of two buffers chosen by argument into work buffer
+0x06035e9c func save_CheckBackupDevices hand provisional probes two backup devices and records which one is usable
+0x06035f94 func save_OpenBackupFile hand builds SONICR___01 and SAVE_DATA names and opens backup RAM file, returns status code
+0x060360a0 func save_WriteFileResetSafe hand provisional writes save data through backup vtable while SMPC reset is disabled
+0x0603614c func save_ReadHeader hand provisional queries device status and copies header bytes into buffer when successful
+0x06036194 func save_StoreSlotBlock hand copies 0x70-byte save slot block into slot buffer for current slot number
+0x06036208 func save_StoreSlotAndWrite hand copies slot block by index computed from slot id then calls write helpers
+0x06036268 func save_InitDevices hand clears save buffer, checks both backup devices, reports errors via callback
+0x0603635c func math_ShiftLeftVar hand variable left shift implemented as case ladder, libgcc style ashiftlt
+0x060363fe func stub_060363fe hand tiny stub that only returns
+0x0603641a func stub_0603641a hand tiny stub that only returns
+0x0603641c func stub_0603641c hand tiny stub that only returns
+0x06036420 func stub_06036420 hand tiny stub that only returns
+0x06036422 func stub_06036422 hand tiny stub that only returns
+0x06036424 func stub_06036424 hand tiny stub that only returns
+0x06036426 func stub_06036426 hand tiny stub that only returns
+0x06036428 func stub_06036428 hand tiny stub that only returns
+0x0603642a func stub_0603642a hand tiny stub that only returns
+0x0603642c func stub_0603642c hand tiny stub that only returns
+0x060364a0 func mem_Copy64ByteBlocks hand memcpy loop copying 16 longs per iteration until count exhausted
+0x060364ec func divsi3 hand libgcc signed 32-bit division unrolled with div1 steps, returns zero for zero divisor
+0x0603658c func math_ShiftRightArithVar hand variable arithmetic right shift case ladder, libgcc style ashiftrt
+0x06036610 func sys_GetWord hand returns a global word value
+0x06036620 func sys_GetHalfword hand returns a global halfword read through a pointer
+0x06036664 func sys_SetHalfword hand writes a halfword to a global register address
+0x06036674 func sys_ApplyDefaultMask hand calls a setter with a default mask constant and stores it in a global
+0x0603669c func sys_OrFlags hand ORs the argument bits into a global halfword
+0x060366b0 func sys_GetHalfword_2 hand returns a second global halfword read through a pointer
+0x060366c4 func sys_SetHalfword_2 hand writes a halfword to a second global register address
+0x060366d4 func sys_GetWord_2 hand returns a second global word value
+0x060366e4 func cd_ReadDataWords hand reads N halfwords from CD data transfer register into buffer, checks transferred count, error -7
+0x06036740 func cd_CallHandler hand wrapper that calls a CD block handler function pointer with no arguments
+0x06036780 func cd_WaitHirqAndCommand hand ORs HIRQ flags, checks mask, sends command, reads CR response, errors -1 -2 -5 -6
+0x0603683c func cd_PollHirq hand polls HIRQ register for requested bits with retry limit, returns -3 on timeout
+0x06036870 func cd_WriteCommandRegs hand writes four halfwords to CD block command registers CR1 to CR4
+0x060368ac func cd_ReadResponseRegs hand reads four halfwords from CD block response registers CR1 to CR4
+0x06036938 func cd_CallHandler_2 hand wrapper that calls a CD helper function pointer with no arguments
+0x06036950 func cd_GetStatusChecked hand reads CD status, converts it and returns error -8 if status invalid or not ready
+0x060369a0 func cd_ReadStableStatus hand reads CD response twice until equal, up to 100 tries, else -3
+0x06036a24 func cd_GetHardwareInfo hand sends CD command 0x01 and copies five response bytes to output
+0x06036a8c func cd_GetToc hand sends CD command 0x02 and passes masked response size to a helper
+0x06036ad8 func cd_GetSessionInfo hand sends CD command 0x03 with session number and returns response CR4 value
+0x06036b14 func cd_InitializeSystem hand sends CD command 0x04 with flags, optional speed setup when flag bits match, returns status
+0x06036b98 func cd_OpenTray hand provisional sends CD command 0x05 via command helper
+0x06036bc0 func cd_WaitCommandDone hand provisional waits for CD command completion flags, returns error -4 on tray open, clears HIRQ
+0x06036c28 func cd_EndDataTransfer hand sends CD command 0x06 end data transfer, returns masked word count, then clears HIRQ
+0x06036c78 func cd_CallHandler_3 hand wrapper that calls a CD helper function pointer with no arguments
+0x06036c90 func cd_SendCommandSimple hand calls command helper with local response buffer and flag 1
+0x06036cb0 func cd_SendCommandCopyResponse hand executes CD command then copies a response byte or block to destination
+0x06036d20 func cd_ReadStatusWords hand provisional copies three words from CD response area and returns status register bits
+0x06036d60 func cd_PackResponse hand repacks CD response bytes into structure, masks last word
+0x06036da8 func util_DelayLoop hand busy-wait loop counting down the argument
+0x06036dcc func sys_SetIntHandler hand stores handler pointer in table at index and registers it via function pointer
+0x06036df8 func sys_GetIntHandler hand returns handler pointer from table at given index
+0x06037430 func pad_InitIntback hand provisional initialises SMPC peripheral INTBACK state, buffers and vector 0x47 for mode 0 1 or 2
+0x06037648 func pad_ReadIntbackResult hand provisional per-frame INTBACK result swap, retry counting and buffer exchange, returns status
+0x06037850 func pad_ParseIntbackData hand parses SMPC INTBACK OREG peripheral data with per-device state machine, reversed byte order
+0x06037e80 func pad_CheckCountLimit hand sets flag when a counter reaches limit halfword
+0x06037eac func pad_CheckSmpcStatusBit hand sets state to 2 when SR bit 0x20 set and counter above threshold
+0x06037ee0 func pad_CopyOregToBuffer hand copies every other byte from SMPC OREG to buffer until end address
+0x06037f34 func pad_StoreSlotData hand copies per-slot bytes into peripheral buffer with row stride width plus 2
+0x06037f9c func pad_ResetState hand clears all peripheral parsing state variables and sets initial 0xf0 bytes
+0x06038028 func smpc_StartIntback hand writes IREG bytes and starts INTBACK with SF set, returns 0 on start
+0x06038094 func pad_PollRepeat hand provisional loops handler calls while remaining count positive and below limit
+0x060380fc func pad_SetBufferByte0 hand stores byte at first position of current buffer row
+0x06038128 func pad_SetBufferByte1 hand stores byte at second position of current buffer row
+0x06038158 func pad_ProcessConfigCopy hand provisional copies six config words to stack and calls helper twice if first returns nonzero
+0x060381c0 func pad_CopyDataRows hand provisional copies or fills peripheral data rows of width plus 2 between two buffers

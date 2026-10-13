@@ -1,0 +1,30 @@
+0 0x06018418 frame_WaitSyncAdvanceState CONFIRM frame_WaitSyncAdvanceState waits for state 2 flag, runs sync calls, sets state 3; used by fade and screen loops
+0 0x0601892c dma_StartNextFileBlock RENAME dma_StartNextStreamBlock walks object pointer list, transforms object and programs SCU DMA; pairs with dma_StreamNextBlock; no file access
+0 0x06018a30 vdp1_SwapCommandListsAndSync CONFIRM vdp1_SwapCommandListsAndSync end-of-frame view matrices, command list swap, DMA and sync; called by all screens
+0 0x06019cac gfx_ResetMenuState CONFIRM gfx_ResetMenuState clears state tables, loads icon/title asset by screen id; called at start of each menu screen
+0 0x06019ee0 menu_UpdateSelectionScroll RENAME menu_UpdateOptionsCursors moves option cursors toward targets, pad left/right changes values with sfx; only caller is options screen
+0 0x0601b4a4 menu_UpdateFreeLookCamera RENAME menu_UpdateTitleCamera sine idle sway plus pad offsets and decay writing camera; only caller is title screen
+0 0x0601d31c menu_UpdateDigitSprites CONFIRM menu_UpdateDigitSprites four-digit sprite coordinates from glyph table; called by option2 screen
+0 0x0601d3dc menu_UpdateButtonIconSprites CONFIRM menu_UpdateButtonIconSprites shows or hides VDP1 icon entries from bitmask bytes; option2 button screen
+0 0x0601e444 pad_PollUntilReady CONFIRM pad_PollUntilReady polls port data with delay until ready byte set; called in main loop init
+0 0x0601e4c4 pad_ScanControllerTypes CONFIRM pad_ScanControllerTypes classifies device ids per port and builds button masks
+0 0x0601e868 game_SnapshotCameraState RENAME irq_VBlankHudAndRotParams called from vblank handler; copies 9-word matrices to VDP table, draws HUD panels, stores rotation param entries
+0 0x0601ea4c frame_StepSyncCounter RENAME irq_VBlankPadScan vblank handler piece; counts frames, runs pad scan, checks held buttons
+0 0x0601eb18 game_StartTransition RENAME irq_InstallSceneCallback called from vblank vector setup; installs scene_AdvanceRotation as callback, writes table and clears Z table
+0 0x0601ec5c game_RequestStateChange UNSURE game_RequestStateChange calls a stub with constants then sets a flag; too little to tell what is requested
+0 0x0601ec90 game_StoreCameraHistoryEntry RENAME vdp2_StoreRotParamEntry copies 9-word matrix and two shorts into hardware table at DAT_0600c97c; vblank handler caller
+0 0x0601ed30 ui_StepScrollOffset CONFIRM ui_StepScrollOffset steps scroll value by 0x20 with clamps by direction flag; vblank caller
+0 0x0601f01c sound_PlayCourseMusic CONFIRM sound_PlayCourseMusic selects track from course id and difficulty, starts it; called from race load and HUD
+0 0x0601f098 fx_FadeLoop CONFIRM fx_FadeLoop loop lowering level by 8 with frame sync each step; used by options screen
+0 0x0601f0f4 vdp2_SetSplitScreenWindow RENAME vdp2_SetFadeWipeWindow called by fade-step functions with a level; sets window y range scaling with level, not by player
+0 0x0601f1a0 scsp_SendCommandBuffer UNSURE scsp_SendCommandBuffer calls a copy routine with buffer and size then a stub; sound target not proven
+0 0x0601f20c smpc_SendCommand CONFIRM smpc_SendCommand waits busy flag, writes command/params to SMPC regs with delay; called at boot
+0 0x0601f4dc replay_RecordPad1Alt RENAME replay_RecordPadAndUpdateCars records pad word or plays back, then runs car_UpdatePhysics for the two cars
+0 0x0601f5c0 col_TestPlayerPairs RENAME race_UpdateCarsAndCollisions pairwise swept and normal car collisions, then AI, movement and collision update for each car
+0 0x0601f7c0 col_TestTwoPlayers RENAME race_UpdateTwoCarsAndCollisions collides two cars then rubber band, AI, movement and collision updates
+0 0x0601f840 scene_AdvanceRotation CONFIRM scene_AdvanceRotation adds 0x28 to masked angle, copies to view globals, rebuilds matrices; used as callback
+0 0x0601f8a4 render_SetupFrameCamera UNSURE render_SetupFrameCamera computes camera products and matrices then copies lists; no callers to confirm role
+0 0x0601fa40 render_DrawSceneWrapper RENAME render_InitViewMatricesSynced stub, math_InitViewMatricesScaled, stub; no drawing; results screen caller
+0 0x0601fa68 render_CopyBackdropTiles RENAME render_DrawStaticFrameCmds copies VDP1 command templates (DAT_06009948/06009888), inits matrices, frame tick; not tiles
+0 0x0601fb30 render_DrawRaceFrame CONFIRM render_DrawRaceFrame full per-frame race update and render: ground contact, camera trail, fx, replay, collisions
+0 0x0601ff3c render_DrawRaceFrameLite CONFIRM render_DrawRaceFrameLite same flow as race frame for two cars, fewer players; used by race init and preview scenes
