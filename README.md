@@ -23,7 +23,7 @@ no Ghidra database. You need your own copy of the game to use any of this.
 | `ghidra/funcinfo_0.tsv` | per-function export: `F` address name source size, `C` callees, `S` string references |
 | `ghidra/naming/` | naming batches (`h1-h5`), review prompt and verdicts (`<prog> 0x<addr> <old> CONFIRM/RENAME/UNSURE <new> <reason>`) |
 | `ghidra/scripts/` | `FindSh2FunctionsMem.java` (SH-2 function discovery), `DumpLong.java` |
-| `ghidra/srrun.sh` | headless Ghidra wrapper |
+| `ghidra/srrun.sh` | headless Ghidra wrapper (set `GHIDRA_HEADLESS`, `PROJ_DIR`, `SP`) |
 | `tools/rnc.py` | Rob Northen ProPack method 2 unpacker (checks the CRC; splits chained images) |
 | `tools/scr2png.py` | renders the 157696-byte VDP2 screen files to PNG |
 | `tools/` (rest) | gap and pointer scans, provisional review context and apply scripts |
