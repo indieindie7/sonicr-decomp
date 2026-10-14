@@ -341,8 +341,8 @@
 0x0603642a func stub_0603642a hand tiny stub that only returns
 0x0603642c func stub_0603642c hand tiny stub that only returns
 0x060364a0 func mem_Copy64ByteBlocks hand memcpy loop copying 16 longs per iteration until count exhausted
-0x060364ec func divsi3 hand libgcc signed 32-bit division unrolled with div1 steps, returns zero for zero divisor
-0x0603658c func math_ShiftRightArithVar hand variable arithmetic right shift case ladder, libgcc style ashiftrt
+0x060364ec func __divsi3 hand libgcc signed 32-bit division unrolled with div1 steps, returns zero for zero divisor (bsim audit 10-14: was divsi3)
+0x0603658c func __ashrsi3 hand variable arithmetic right shift case ladder, libgcc style ashiftrt (bsim audit 10-14: was math_ShiftRightArithVar)
 0x06036610 func sys_GetWord hand returns a global word value
 0x06036620 func sys_GetHalfword hand returns a global halfword read through a pointer
 0x06036664 func sys_SetHalfword hand writes a halfword to a global register address
@@ -375,9 +375,9 @@
 0x06036da8 func util_DelayLoop hand busy-wait loop counting down the argument
 0x06036dcc func sys_SetIntHandler hand stores handler pointer in table at index and registers it via function pointer
 0x06036df8 func sys_GetIntHandler hand returns handler pointer from table at given index
-0x06037430 func pad_InitIntback hand initialises SMPC peripheral INTBACK state, buffers and vector 0x47 for mode 0 1 or 2
-0x06037648 func pad_ReadIntbackResult hand per-frame INTBACK result swap, retry counting and buffer exchange, returns status
-0x06037850 func pad_ParseIntbackData hand parses SMPC INTBACK OREG peripheral data with per-device state machine, reversed byte order
+0x06037430 func smpc_InitIntback hand initialises SMPC peripheral INTBACK state, buffers and vector 0x47 for mode 0 1 or 2 (bsim audit 10-14: was pad_InitIntback)
+0x06037648 func smpc_ReadIntbackResult hand per-frame INTBACK result swap, retry counting and buffer exchange, returns status (bsim audit 10-14: was pad_ReadIntbackResult)
+0x06037850 func smpc_ParseIntbackData hand parses SMPC INTBACK OREG peripheral data with per-device state machine, reversed byte order (bsim audit 10-14: was pad_ParseIntbackData)
 0x06037e80 func pad_CheckCountLimit hand sets flag when a counter reaches limit halfword
 0x06037eac func pad_CheckSmpcStatusBit hand sets state to 2 when SR bit 0x20 set and counter above threshold
 0x06037ee0 func pad_CopyOregToBuffer hand copies every other byte from SMPC OREG to buffer until end address
@@ -388,4 +388,4 @@
 0x060380fc func pad_SetBufferByte0 hand stores byte at first position of current buffer row
 0x06038128 func pad_SetBufferByte1 hand stores byte at second position of current buffer row
 0x06038158 func pad_CopyDataRowsTwice hand copies six config words to stack and calls helper twice if first returns nonzero (was pad_ProcessConfigCopy)
-0x060381c0 func pad_CopyDataRows hand copies or fills peripheral data rows of width plus 2 between two buffers
+0x060381c0 func smpc_CopyDataRows hand copies or fills peripheral data rows of width plus 2 between two buffers (bsim audit 10-14: was pad_CopyDataRows)
